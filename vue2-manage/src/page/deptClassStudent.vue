@@ -1,8 +1,6 @@
 <template>
     <div class="fillcontain">
-        <div style="text-align:center">
-            <el-button @click="handleEdit()">添加学生班级关系</el-button>
-        </div>
+
         <div class="table_container">
             <el-table
                 :data="tableData"
@@ -10,19 +8,23 @@
                 style="width: 100%">
 
                 <el-table-column
-                    label="班级编号"
-                    prop="name">
+                    label="学生编号"
+                    prop="studentId">
                 </el-table-column>
                 <el-table-column
                     label="班级名"
-                    prop="description">
+                    prop="className">
                 </el-table-column>
                 <el-table-column
-                    label="班主任"
-                    prop="rating">
+                    label="职位"
+                    prop="stuPosition">
                 </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
+                        <el-button
+                            size="small"
+                            @click="handleEdit(scope.row)">编辑
+                        </el-button>
                         <el-button
                             size="small"
                             type="danger"
@@ -41,16 +43,19 @@
                     :total="count">
                 </el-pagination>
             </div>
-            <el-dialog title="修改院系信息" v-model="dialogFormVisible">
+            <div style="text-align:center">
+                <el-button @click="handleEdit()">添加学生班级关系</el-button>
+            </div>
+            <el-dialog title="修改学生班级信息" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
-                    <el-form-item label="院系编号" label-width="100px">
-                        <el-input v-model="selectTable.name" auto-complete="off"></el-input>
+                    <el-form-item label="学生编号" label-width="100px">
+                        <el-input v-model="selectTable.studentId" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="院系名称" label-width="100px">
-                        <el-input v-model="selectTable.description"></el-input>
+                    <el-form-item label="班级名称" label-width="100px">
+                        <el-input v-model="selectTable.className"></el-input>
                     </el-form-item>
-                    <el-form-item label="系主任" label-width="100px">
-                        <el-input v-model="selectTable.description"></el-input>
+                    <el-form-item label="学生职位" label-width="100px">
+                        <el-input v-model="selectTable.stuPosition"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">

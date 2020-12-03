@@ -8,15 +8,15 @@
                         <template slot="title"><i class="el-icon-document"></i>数据管理</template>
                         <el-menu-item index="libBook">图书列表</el-menu-item>
                         <el-menu-item index="libBookBorrow">学生借阅列表</el-menu-item>
-                        <el-menu-item index="libAdminList">管理员列表</el-menu-item>
+                        <!--el-menu-item index="libAdminList">管理员列表</--el-menu-item-->
                     </el-submenu>
-                    <el-submenu index="3">
+                    <!--el-submenu index="3">
                         <template slot="title"><i class="el-icon-edit"></i>修改</template>
                         <el-menu-item index="libAddBook">添加图书</el-menu-item>
                         <el-menu-item index="addShop">修改密码</el-menu-item>
-                    </el-submenu>
+                    </el-submenu-->
                     <el-submenu index="4">
-                        <template slot="title"><i class="el-icon-star-on"></i>图表</template>
+                        <template slot="title"><i class="el-icon-star-on"></i>报表分析</template>
                         <el-menu-item index="libVisitor">用户借阅分布</el-menu-item>
                         <!-- <el-menu-item index="newMember">用户数据</el-menu-item> -->
                     </el-submenu>

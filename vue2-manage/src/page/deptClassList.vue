@@ -1,24 +1,39 @@
 <template>
     <div class="fillcontain">
-        <div style="text-align:center">
-            <el-button @click="handleEdit(-1)">添加班级</el-button>
+        <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
+            <el-input
+                @keyup.enter.native="searchClick"
+                placeholder="通过编号查询..."
+                prefix-icon="el-icon-search"
+                size="small"
+                style="width: 400px;margin-right: 10px"
+                v-model="keywords">
+            </el-input>
+            <el-button size="small" type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
+
         </div>
+
         <div class="table_container">
+
             <el-table
                 :data="tableData"
                 highlight-current-row
                 style="width: 100%">
                 <el-table-column
                     label="班级编号"
-                    prop="name">
+                    prop="classId">
                 </el-table-column>
                 <el-table-column
                     label="班级名"
-                    prop="description">
+                    prop="className">
                 </el-table-column>
                 <el-table-column
                     label="班主任"
-                    prop="rating">
+                    prop="classMaster">
+                </el-table-column>
+                <el-table-column
+                    label="辅导员"
+                    prop="classHelper">
                 </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
@@ -32,6 +47,7 @@
                     </template>
                 </el-table-column>
             </el-table>
+
             <div class="Pagination">
                 <el-pagination
                     @size-change="handleSizeChange"
@@ -42,16 +58,22 @@
                     :total="count">
                 </el-pagination>
             </div>
-            <el-dialog title="修改院系信息" v-model="dialogFormVisible">
+            <div  style="text-align:center">
+                <el-button class="el-icon-plus"  @click="handleEdit(-1)">添加班级</el-button>
+            </div>
+            <el-dialog title="修改班级信息" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
-                    <el-form-item label="院系编号" label-width="100px">
-                        <el-input v-model="selectTable.name" auto-complete="off"></el-input>
+                    <el-form-item label="班级编号" label-width="100px">
+                        <el-input v-model="selectTable.classId" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="院系名称" label-width="100px">
-                        <el-input v-model="selectTable.description"></el-input>
+                    <el-form-item label="班级名称" label-width="100px">
+                        <el-input v-model="selectTable.className"></el-input>
                     </el-form-item>
-                    <el-form-item label="系主任" label-width="100px">
-                        <el-input v-model="selectTable.rating"></el-input>
+                    <el-form-item label="班主任" label-width="100px">
+                        <el-input v-model="selectTable.classMaster"></el-input>
+                    </el-form-item>
+                    <el-form-item label="辅导员" label-width="100px">
+                        <el-input v-model="selectTable.classHelper"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -72,6 +94,7 @@
             return {
                 baseUrl,
                 baseImgPath,
+                keywords:'',
                 restaurant_id: null,
                 offset: 0,
                 limit: 10,
@@ -138,7 +161,7 @@
                     console.log('获取食品种类失败', err);
                 }
             },
-            async getFoods(){
+            /*async getFoods(){
                 const Foods = await getFoods({offset: this.offset, limit: this.limit, restaurant_id: this.restaurant_id});
                 this.tableData = [];
                 Foods.forEach((item, index) => {
@@ -155,7 +178,7 @@
                     tableData.index = index;
                     this.tableData.push(tableData);
                 })
-            },
+            },*/
             tableRowClassName(row, index) {
                 if (index === 1) {
                     return 'info-row';
@@ -188,7 +211,7 @@
             async getSelectItemData(row, type){
                 const restaurant = await getResturantDetail(row.restaurant_id);
                 const category = await getMenuById(row.category_id)
-                this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name}};
+                this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name,classHelper:restaurant}};
 
                 this.selectMenu = {label: category.name, value: row.category_id}
                 this.tableData.splice(row.index, 1, {...this.selectTable});
@@ -246,6 +269,9 @@
                     console.log('更新餐馆信息失败', err);
                 }
             },
+            searchClick(){
+                //wdnmd
+            },
             selectAll () {
                 this.$axios
                     .get('/class/selectAll', {})
@@ -257,9 +283,11 @@
                         {
                             //console.log(successResponse.data[i]);
                             this.tableData.push({
-                                name: successResponse.data[i].classId,
-                                description: successResponse.data[i].department,
-                                rating: successResponse.data[i].header,
+                                classId: successResponse.data[i].classId,
+                                className: successResponse.data[i].department,
+                                classMaster: successResponse.data[i].header,
+                                classHelper: successResponse.data[i].classMaster,
+                                //wdnmd classHelper
                             })
                         }
                     })
@@ -275,9 +303,10 @@
                 this.dialogFormVisible = false;
                 this.$axios
                     .post('/class/insert', {
-                        classId: this.selectTable.name,
-                        department: this.selectTable.description,
-                        header: this.selectTable.rating,
+                        classId: this.selectTable.classId,
+                        department: this.selectTable.className,
+                        header: this.selectTable.classMaster,
+                        helper:this.selectTable.classHelper,
                         counsellor: "wdnmd2"}
                         )
                     .then(successResponse => {

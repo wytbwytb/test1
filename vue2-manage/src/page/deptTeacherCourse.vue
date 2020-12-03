@@ -1,31 +1,39 @@
 <template>
     <div class="fillcontain">
+
         <div class="table_container">
             <el-table
                 :data="tableData"
                 highlight-current-row
                 style="width: 100%">
+
                 <el-table-column
-                    label="系编号"
-                    prop="deptId">
+                    label="课程号"
+                    prop="courseId">
                 </el-table-column>
                 <el-table-column
-                    label="系名"
-                    prop="deptName">
+                    label="教师编号"
+                    prop="teacherId">
                 </el-table-column>
                 <el-table-column
-                    label="系主任"
-                    prop="deptMaster">
+                    label="上课地点"
+                    prop="classRoom">
+                </el-table-column>
+                <el-table-column
+                    label="上课时间"
+                    prop="classTime">
                 </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
                         <el-button
                             size="small"
-                            @click="handleEdit(scope.row)">编辑</el-button>
+                            @click="handleEdit(scope.row)">编辑
+                        </el-button>
                         <el-button
                             size="small"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                            @click="handleDelete(scope.$index, scope.row)">删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -39,19 +47,22 @@
                     :total="count">
                 </el-pagination>
             </div>
-            <div  style="text-align:center">
-                <el-button class="el-icon-plus"  @click="handleEdit(-1)">添加系</el-button>
+            <div style="text-align:center">
+                <el-button @click="handleEdit()">添加教师课程关系</el-button>
             </div>
-            <el-dialog title="修改院系信息" v-model="dialogFormVisible">
+            <el-dialog title="修改教师课程信息" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
-                    <el-form-item label="院系编号" label-width="100px">
-                        <el-input v-model="selectTable.deptId" auto-complete="off"></el-input>
+                    <el-form-item label="课程号" label-width="100px">
+                        <el-input v-model="selectTable.courseId" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="院系名称" label-width="100px">
-                        <el-input v-model="selectTable.deptName"></el-input>
+                    <el-form-item label="教师编号" label-width="100px">
+                        <el-input v-model="selectTable.teacherId"></el-input>
                     </el-form-item>
-                    <el-form-item label="系主任" label-width="100px">
-                        <el-input v-model="selectTable.deptMaster"></el-input>
+                    <el-form-item label="上课地点" label-width="100px">
+                        <el-input v-model="selectTable.classRoom"></el-input>
+                    </el-form-item>
+                    <el-form-item label="上课时间" label-width="100px">
+                        <el-input v-model="selectTable.classTime"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -66,9 +77,18 @@
 <script>
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
-    import {getFoods, getFoodsCount, getMenu, updateFood, deleteFood, getResturantDetail, getMenuById} from '@/api/getData'
+    import {
+        getFoods,
+        getFoodsCount,
+        getMenu,
+        updateFood,
+        deleteFood,
+        getResturantDetail,
+        getMenuById
+    } from '@/api/getData'
+
     export default {
-        data(){
+        data() {
             return {
                 baseUrl,
                 baseImgPath,
@@ -86,11 +106,11 @@
                 expendRow: [],
             }
         },
-        created(){
+        created() {
             this.initData();
         },
         computed: {
-            specs: function (){
+            specs: function () {
                 let specs = [];
                 if (this.selectTable.specfoods) {
                     this.selectTable.specfoods.forEach(item => {
@@ -108,22 +128,22 @@
             headTop,
         },
         methods: {
-            async initData(){
-                try{
+            async initData() {
+                try {
                     const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
                     if (countData.status == 1) {
                         this.count = countData.count;
-                    }else{
+                    } else {
                         throw new Error('获取数据失败');
                     }
                     this.getFoods();
-                }catch(err){
+                } catch (err) {
                     console.log('获取数据失败', err);
                 }
             },
-            async getMenu(){
+            async getMenu() {
                 this.menuOptions = [];
-                try{
+                try {
                     const menu = await getMenu({restaurant_id: this.selectTable.restaurant_id, allMenu: true});
                     menu.forEach((item, index) => {
                         this.menuOptions.push({
@@ -132,12 +152,16 @@
                             index,
                         })
                     })
-                }catch(err){
+                } catch (err) {
                     console.log('获取食品种类失败', err);
                 }
             },
-            async getFoods(){
-                const Foods = await getFoods({offset: this.offset, limit: this.limit, restaurant_id: this.restaurant_id});
+            async getFoods() {
+                const Foods = await getFoods({
+                    offset: this.offset,
+                    limit: this.limit,
+                    restaurant_id: this.restaurant_id
+                });
                 this.tableData = [];
                 Foods.forEach((item, index) => {
                     const tableData = {};
@@ -168,7 +192,7 @@
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.offset = (val - 1)*this.limit;
+                this.offset = (val - 1) * this.limit;
                 this.getFoods()
             },
 
@@ -176,10 +200,16 @@
                 this.getSelectItemData(row, 'edit')
                 this.dialogFormVisible = true;
             },
-            async getSelectItemData(row, type){
+            async getSelectItemData(row, type) {
                 const restaurant = await getResturantDetail(row.restaurant_id);
                 const category = await getMenuById(row.category_id)
-                this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name}};
+                this.selectTable = {
+                    ...row, ...{
+                        restaurant_name: restaurant.name,
+                        restaurant_address: restaurant.address,
+                        category_name: category.name
+                    }
+                };
 
                 this.selectMenu = {label: category.name, value: row.category_id}
                 this.tableData.splice(row.index, 1, {...this.selectTable});
@@ -190,12 +220,12 @@
                     this.getMenu();
                 }
             },
-            handleSelect(index){
+            handleSelect(index) {
                 this.selectIndex = index;
                 this.selectMenu = this.menuOptions[index];
             },
             async handleDelete(index, row) {
-                try{
+                try {
                     const res = await deleteFood(row.item_id);
                     if (res.status == 1) {
                         this.$message({
@@ -203,10 +233,10 @@
                             message: '删除食品成功'
                         });
                         this.tableData.splice(index, 1);
-                    }else{
+                    } else {
                         throw new Error(res.message)
                     }
-                }catch(err){
+                } catch (err) {
                     this.$message({
                         type: 'error',
                         message: err.message
@@ -215,9 +245,9 @@
                 }
             },
 
-            async updateFood(){
+            async updateFood() {
                 this.dialogFormVisible = false;
-                try{
+                try {
                     const subData = {new_category_id: this.selectMenu.value, specs: this.specs};
                     const postData = {...this.selectTable, ...subData};
                     const res = await updateFood(postData)
@@ -227,13 +257,13 @@
                             message: '更新食品信息成功'
                         });
                         this.getFoods();
-                    }else{
+                    } else {
                         this.$message({
                             type: 'error',
                             message: res.message
                         });
                     }
-                }catch(err){
+                } catch (err) {
                     console.log('更新餐馆信息失败', err);
                 }
             },
@@ -243,26 +273,32 @@
 
 <style lang="less">
     @import '../style/mixin';
+
     .demo-table-expand {
         font-size: 0;
     }
+
     .demo-table-expand label {
         width: 90px;
         color: #99a9bf;
     }
+
     .demo-table-expand .el-form-item {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
     }
-    .table_container{
+
+    .table_container {
         padding: 20px;
     }
-    .Pagination{
+
+    .Pagination {
         display: flex;
         justify-content: flex-start;
         margin-top: 8px;
     }
+
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -270,9 +306,11 @@
         position: relative;
         overflow: hidden;
     }
+
     .avatar-uploader .el-upload:hover {
         border-color: #20a0ff;
     }
+
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
@@ -281,6 +319,7 @@
         line-height: 120px;
         text-align: center;
     }
+
     .avatar {
         width: 120px;
         height: 120px;

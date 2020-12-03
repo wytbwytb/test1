@@ -3,22 +3,18 @@
         <el-row style="height: 100%;">
             <el-col :span="4"  style="min-height: 100%; background-color: #324057;">
                 <el-menu :default-active="defaultActive" style="min-height: 100%;" theme="dark" router>
-                    <el-menu-item index="deptManage"><i class="el-icon-menu"></i>系管理</el-menu-item>
+                    <el-menu-item index="otherManage"><i class="el-icon-menu"></i>杂项管理</el-menu-item>
                     <el-submenu index="2">
                         <template slot="title"><i class="el-icon-document"></i>数据管理</template>
-                        <el-menu-item index="deptList">院系列表</el-menu-item>
-                        <el-menu-item index="deptTeacherList">教师列表</el-menu-item>
-                        <el-menu-item index="deptClassList">班级列表</el-menu-item>
-                        <el-menu-item index="deptStudentList">学生列表</el-menu-item>
-                        <el-menu-item index="deptClassroomList">教室列表</el-menu-item>
-                        <el-menu-item index="deptCourseList">课程列表</el-menu-item>
+                        <el-menu-item index="otherAssociation">社团列表</el-menu-item>
+                        <el-menu-item index="otherDormBuilding">公寓楼列表</el-menu-item>
+                        <el-menu-item index="otherDormitory">寝室列表</el-menu-item>
+                        <el-menu-item index="otherStaff">职工列表</el-menu-item>
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title"><i class="el-icon-edit"></i>关系管理</template>
-                        <el-menu-item index="deptClassStudent">班级-学生管理</el-menu-item>
-                        <el-menu-item index="deptStudentCourse">学生-课程管理</el-menu-item>
-                        <el-menu-item index="deptTeacherCourse">教师-课程管理</el-menu-item>
-                        <el-menu-item index="deptCourseBook">课程-书籍管理</el-menu-item>
+                        <el-menu-item index="otherStuDormClub">学生杂项管理</el-menu-item>
+                        <el-menu-item index="otherStaffDormBuilding">职工杂项管理</el-menu-item>
                     </el-submenu>
                     <el-submenu index="4">
                         <template slot="title"><i class="el-icon-star-on"></i>图表</template>

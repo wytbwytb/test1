@@ -1,21 +1,39 @@
 <template>
     <div class="fillcontain">
+        <!--div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
+            <el-input
+                @keyup.enter.native="searchClick"
+                placeholder="通过编号查询..."
+                prefix-icon="el-icon-search"
+                size="small"
+                style="width: 400px;margin-right: 10px"
+                v-model="keywords">
+            </el-input>
+            <el-button size="small" type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
+
+        </div-->
+
         <div class="table_container">
+
             <el-table
                 :data="tableData"
                 highlight-current-row
                 style="width: 100%">
                 <el-table-column
-                    label="系编号"
-                    prop="deptId">
+                    label="学号"
+                    prop="stuId">
                 </el-table-column>
                 <el-table-column
-                    label="系名"
-                    prop="deptName">
+                    label="寝室号"
+                    prop="dormId">
                 </el-table-column>
                 <el-table-column
-                    label="系主任"
-                    prop="deptMaster">
+                    label="社团名称"
+                    prop="clubName">
+                </el-table-column>
+                <el-table-column
+                    label="社团职位"
+                    prop="clubPos">
                 </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
@@ -25,38 +43,43 @@
                         <el-button
                             size="small"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                            @click="deletenb(scope.row.name)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
+
             <div class="Pagination">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-size="20"
+                    :page-size="10"
                     layout="total, prev, pager, next"
                     :total="count">
                 </el-pagination>
             </div>
             <div  style="text-align:center">
-                <el-button class="el-icon-plus"  @click="handleEdit(-1)">添加系</el-button>
+                <el-button class="el-icon-plus"  @click="handleEdit(-1)">学生杂项管理</el-button>
             </div>
-            <el-dialog title="修改院系信息" v-model="dialogFormVisible">
+            <el-dialog title="修改学生杂项信息" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
-                    <el-form-item label="院系编号" label-width="100px">
-                        <el-input v-model="selectTable.deptId" auto-complete="off"></el-input>
+                    <el-form-item label="学号" label-width="100px">
+                        <el-input v-model="selectTable.stuId" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="院系名称" label-width="100px">
-                        <el-input v-model="selectTable.deptName"></el-input>
+                    <el-form-item label="寝室号" label-width="100px">
+                        <el-input v-model="selectTable.dormId"></el-input>
                     </el-form-item>
-                    <el-form-item label="系主任" label-width="100px">
-                        <el-input v-model="selectTable.deptMaster"></el-input>
+                    <el-form-item label="社团名称" label-width="100px">
+                        <el-input v-model="selectTable.clubName"></el-input>
                     </el-form-item>
+                    <el-form-item label="社团职位" label-width="100px">
+                        <el-input v-model="selectTable.clubPos"></el-input>
+                    </el-form-item>
+
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="updateFood">确 定</el-button>
+                    <el-button type="primary" @click="insertOrUpdate">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -72,12 +95,14 @@
             return {
                 baseUrl,
                 baseImgPath,
+                keywords:'',
                 restaurant_id: null,
                 offset: 0,
                 limit: 10,
                 count: 0,
                 tableData: [],
                 currentPage: 1,
+                addMode: 0,
                 selectTable: {},
                 dialogFormVisible: false,
                 menuOptions: [],
@@ -110,13 +135,14 @@
         methods: {
             async initData(){
                 try{
-                    const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
+                    /*const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
                     if (countData.status == 1) {
                         this.count = countData.count;
                     }else{
                         throw new Error('获取数据失败');
                     }
-                    this.getFoods();
+                    this.getFoods();*/
+                    this.selectAll();
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
@@ -136,7 +162,7 @@
                     console.log('获取食品种类失败', err);
                 }
             },
-            async getFoods(){
+            /*async getFoods(){
                 const Foods = await getFoods({offset: this.offset, limit: this.limit, restaurant_id: this.restaurant_id});
                 this.tableData = [];
                 Foods.forEach((item, index) => {
@@ -153,7 +179,7 @@
                     tableData.index = index;
                     this.tableData.push(tableData);
                 })
-            },
+            },*/
             tableRowClassName(row, index) {
                 if (index === 1) {
                     return 'info-row';
@@ -173,13 +199,20 @@
             },
 
             handleEdit(row) {
-                this.getSelectItemData(row, 'edit')
+                if(row === -1) {
+                    this.addMode = 1;
+                    this.selectTable={};
+                }
+                else {
+                    this.addMode=0;
+                    this.getSelectItemData(row, 'edit')
+                }
                 this.dialogFormVisible = true;
             },
             async getSelectItemData(row, type){
                 const restaurant = await getResturantDetail(row.restaurant_id);
                 const category = await getMenuById(row.category_id)
-                this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name}};
+                this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name,classHelper:restaurant}};
 
                 this.selectMenu = {label: category.name, value: row.category_id}
                 this.tableData.splice(row.index, 1, {...this.selectTable});
@@ -237,6 +270,86 @@
                     console.log('更新餐馆信息失败', err);
                 }
             },
+            searchClick(){
+                //wdnmd
+            },
+            selectAll () {
+                this.$axios
+                    .get('/class/selectAll', {})
+                    .then(successResponse => {
+                        console.log(successResponse);
+                        this.tableData=[];
+                        var i;
+                        for(i=0;i<successResponse.data.length;i++)
+                        {
+                            //console.log(successResponse.data[i]);
+                            this.tableData.push({
+                                classId: successResponse.data[i].classId,
+                                className: successResponse.data[i].department,
+                                classMaster: successResponse.data[i].header,
+                                classHelper: successResponse.data[i].classMaster,
+                                //wdnmd classHelper
+                            })
+                        }
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '获取班级信息失败'});
+                    })
+            },
+            insertOrUpdate() {
+                if(this.addMode===0) this.update();
+                else this.insert();
+            },
+            insert() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .post('/class/insert', {
+                        classId: this.selectTable.classId,
+                        department: this.selectTable.className,
+                        header: this.selectTable.classMaster,
+                        helper:this.selectTable.classHelper,
+                        counsellor: "wdnmd2"}
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '添加班级信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '添加班级信息失败'});
+                    })
+            },
+            update() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .put('/class/update', {
+                        classId: this.selectTable.name,
+                        department: this.selectTable.description,
+                        header: this.selectTable.rating,
+                        counsellor: "wdnmd"}
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '更新班级信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '更新班级信息失败'});
+                    })
+            },
+            deletenb(name) {
+                console.log(name);
+                this.$axios
+                    .post('/class/delete', {classId: name})
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '删除成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '删除失败'});
+                    })
+            }
         },
     }
 </script>

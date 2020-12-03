@@ -1,21 +1,36 @@
 <template>
     <div class="fillcontain">
+        <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
+            <el-input
+                @keyup.enter.native="searchClick"
+                placeholder="通过编号查询..."
+                prefix-icon="el-icon-search"
+                size="small"
+                style="width: 400px;margin-right: 10px"
+                v-model="keywords">
+            </el-input>
+            <el-button size="small" type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
+        </div>
         <div class="table_container">
             <el-table
                 :data="tableData"
                 highlight-current-row
                 style="width: 100%">
                 <el-table-column
-                    label="班级编号"
-                    prop="name">
+                    label="课程编号"
+                    prop="courseId">
                 </el-table-column>
                 <el-table-column
-                    label="班级名"
-                    prop="description">
+                    label="课程名称"
+                    prop="courseName">
                 </el-table-column>
                 <el-table-column
-                    label="班主任"
-                    prop="rating">
+                    label="学分"
+                    prop="courseCredit">
+                </el-table-column>
+                <el-table-column
+                    label="开课院系"
+                    prop="courseDept">
                 </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
@@ -39,16 +54,22 @@
                     :total="count">
                 </el-pagination>
             </div>
-            <el-dialog title="修改院系信息" v-model="dialogFormVisible">
+            <div  style="text-align:center">
+                <el-button class="el-icon-plus"  @click="handleEdit(-1)">新增课程</el-button>
+            </div>
+            <el-dialog title="修改课程信息" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
-                    <el-form-item label="院系编号" label-width="100px">
-                        <el-input v-model="selectTable.name" auto-complete="off"></el-input>
+                    <el-form-item label="课程编号" label-width="100px">
+                        <el-input v-model="selectTable.courseId" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="院系名称" label-width="100px">
-                        <el-input v-model="selectTable.description"></el-input>
+                    <el-form-item label="课程名称" label-width="100px">
+                        <el-input v-model="selectTable.courseName"></el-input>
                     </el-form-item>
-                    <el-form-item label="系主任" label-width="100px">
-                        <el-input v-model="selectTable.description"></el-input>
+                    <el-form-item label="学分" label-width="100px">
+                        <el-input v-model="selectTable.courseCredit"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开设院系" label-width="100px">
+                        <el-input v-model="selectTable.courseDept"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -69,6 +90,7 @@
             return {
                 baseUrl,
                 baseImgPath,
+                keywords:'',
                 restaurant_id: null,
                 offset: 0,
                 limit: 10,
@@ -233,6 +255,9 @@
                 }catch(err){
                     console.log('更新餐馆信息失败', err);
                 }
+            },
+            searchClick(){
+                //wdnmd
             },
         },
     }
