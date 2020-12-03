@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;DatabaseName=school
+    username: sa
+    password: 1234
+server:
+  port: 8443

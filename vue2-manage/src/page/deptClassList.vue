@@ -1,5 +1,8 @@
 <template>
     <div class="fillcontain">
+        <div style="text-align:center">
+            <el-button @click="handleEdit(-1)">添加班级</el-button>
+        </div>
         <div class="table_container">
             <el-table
                 :data="tableData"
@@ -25,7 +28,7 @@
                         <el-button
                             size="small"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                            @click="deletenb(scope.row.name)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -48,12 +51,12 @@
                         <el-input v-model="selectTable.description"></el-input>
                     </el-form-item>
                     <el-form-item label="系主任" label-width="100px">
-                        <el-input v-model="selectTable.description"></el-input>
+                        <el-input v-model="selectTable.rating"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="updateFood">确 定</el-button>
+                    <el-button type="primary" @click="insertOrUpdate">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -75,6 +78,7 @@
                 count: 0,
                 tableData: [],
                 currentPage: 1,
+                addMode: 0,
                 selectTable: {},
                 dialogFormVisible: false,
                 menuOptions: [],
@@ -107,13 +111,14 @@
         methods: {
             async initData(){
                 try{
-                    const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
+                    /*const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
                     if (countData.status == 1) {
                         this.count = countData.count;
                     }else{
                         throw new Error('获取数据失败');
                     }
-                    this.getFoods();
+                    this.getFoods();*/
+                    this.selectAll();
                 }catch(err){
                     console.log('获取数据失败', err);
                 }
@@ -170,7 +175,14 @@
             },
 
             handleEdit(row) {
-                this.getSelectItemData(row, 'edit')
+                if(row === -1) {
+                    this.addMode = 1;
+                    this.selectTable={};
+                }
+                else {
+                    this.addMode=0;
+                    this.getSelectItemData(row, 'edit')
+                }
                 this.dialogFormVisible = true;
             },
             async getSelectItemData(row, type){
@@ -234,6 +246,80 @@
                     console.log('更新餐馆信息失败', err);
                 }
             },
+            selectAll () {
+                this.$axios
+                    .get('/class/selectAll', {})
+                    .then(successResponse => {
+                        console.log(successResponse);
+                        this.tableData=[];
+                        var i;
+                        for(i=0;i<successResponse.data.length;i++)
+                        {
+                            //console.log(successResponse.data[i]);
+                            this.tableData.push({
+                                name: successResponse.data[i].classId,
+                                description: successResponse.data[i].department,
+                                rating: successResponse.data[i].header,
+                            })
+                        }
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '获取班级信息失败'});
+                    })
+            },
+            insertOrUpdate() {
+                if(this.addMode===0) this.update();
+                else this.insert();
+            },
+            insert() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .post('/class/insert', {
+                        classId: this.selectTable.name,
+                        department: this.selectTable.description,
+                        header: this.selectTable.rating,
+                        counsellor: "wdnmd2"}
+                        )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '添加班级信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '添加班级信息失败'});
+                    })
+            },
+            update() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .put('/class/update', {
+                        classId: this.selectTable.name,
+                        department: this.selectTable.description,
+                        header: this.selectTable.rating,
+                        counsellor: "wdnmd"}
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '更新班级信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '更新班级信息失败'});
+                    })
+            },
+            deletenb(name) {
+                console.log(name);
+                this.$axios
+                    .post('/class/delete', {classId: name})
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '删除成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '删除失败'});
+                    })
+            }
         },
     }
 </script>

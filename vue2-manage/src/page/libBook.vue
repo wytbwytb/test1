@@ -2,6 +2,8 @@
     <div class="fillcontain">
         <libHead-top></libHead-top>
         <div class="table_container">
+            <button v-on:click="testbook">查询图书信息</button>
+            <br><br>
             <el-table
                 :data="bookData"
                 highlight-current-row
@@ -105,6 +107,7 @@
         },
         methods: {
             async initData(){
+                this.testbook();
                 /*try{
                     const countData = await getUserCount();
                     if (countData.status == 1) {
@@ -135,6 +138,30 @@
                     tableData.city = item.city;
                     this.tableData.push(tableData);
                 })*/
+            },
+            testbook () {
+                this.$axios
+                    .get('/book/selectAll', {})
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.bookData=[];
+                        var i;
+                        for(i=0;i<successResponse.data.length;i++)
+                        {
+                            //console.log(successResponse.data[i]);
+                            this.bookData= this.bookData.concat([{
+                                bookId: successResponse.data[i].bookId,
+                                bookName: successResponse.data[i].name,
+                                bookAuthor: successResponse.data[i].author,
+                                bookPublish: successResponse.data[i].publisher,
+                                bookPublishYear: successResponse.data[i].publishDate,
+                                bookStatus: successResponse.data[i].state,
+                            }])
+                        }
+                    })
+                    .catch(failResponse => {
+                        console.log(failResponse);
+                    })
             }
         },
     }

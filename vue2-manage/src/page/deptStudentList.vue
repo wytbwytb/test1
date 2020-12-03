@@ -3,8 +3,44 @@
         <div class="table_container">
             <el-table
                 :data="tableData"
+                @expand='expand'
+                :expand-row-keys='expendRow'
+                :row-key="row => row.index"
                 highlight-current-row
                 style="width: 100%">
+                <el-table-column type="expand">
+                  <template slot-scope="props">
+                    <el-form label-position="left" inline class="demo-table-expand">
+                      <el-form-item label="食品名称">
+                        <span>{{ props.row.name }}</span>
+                      </el-form-item>
+                      <el-form-item label="餐馆名称">
+                        <span>{{ props.row.restaurant_name }}</span>
+                      </el-form-item>
+                      <el-form-item label="食品 ID">
+                        <span>{{ props.row.item_id }}</span>
+                      </el-form-item>
+                      <el-form-item label="餐馆 ID">
+                        <span>{{ props.row.restaurant_id }}</span>
+                      </el-form-item>
+                      <el-form-item label="食品介绍">
+                        <span>{{ props.row.description }}</span>
+                      </el-form-item>
+                      <el-form-item label="餐馆地址">
+                        <span>{{ props.row.restaurant_address }}</span>
+                      </el-form-item>
+                      <el-form-item label="食品评分">
+                        <span>{{ props.row.rating }}</span>
+                      </el-form-item>
+                      <el-form-item label="食品分类">
+                        <span>{{ props.row.category_name }}</span>
+                      </el-form-item>
+                      <el-form-item label="月销量">
+                        <span>{{ props.row.month_sales }}</span>
+                      </el-form-item>
+                    </el-form>
+                  </template>
+                </el-table-column>
                 <el-table-column
                     label="班级编号"
                     prop="name">
@@ -29,6 +65,13 @@
                     </template>
                 </el-table-column>
             </el-table>
+            用户名:<input type="text" v-model="loginForm.username" placeholder="请输入用户名"/>
+            <br><br>
+            密码： <input type="password" v-model="loginForm.password" placeholder="请输入密码"/>
+            <br><br>
+            验证： <input type="text" v-model="loginForm.yshnb" placeholder="请输入“yshnb”"/>
+            <br><br>
+            <button v-on:click="login">登录</button>
             <div class="Pagination">
                 <el-pagination
                     @size-change="handleSizeChange"
@@ -67,6 +110,11 @@
     export default {
         data(){
             return {
+                loginForm: {
+                    username: '',
+                    password: '',
+                    yshnb: ''
+                },
                 baseUrl,
                 baseImgPath,
                 restaurant_id: null,
@@ -110,6 +158,7 @@
                     const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
                     if (countData.status == 1) {
                         this.count = countData.count;
+                        console.log('wdnmd,cnm');
                     }else{
                         throw new Error('获取数据失败');
                     }
@@ -234,6 +283,23 @@
                     console.log('更新餐馆信息失败', err);
                 }
             },
+            login () {
+                this.$axios
+                    .post('/loginn', {
+                        username: this.loginForm.username,
+                        password: this.loginForm.password,
+                        yshnb: this.loginForm.yshnb
+                    })
+                    .then(successResponse => {
+                        if (successResponse.data.code === 200) {
+                            this.$router.replace({path: '/libBook'})
+                        } else {
+                            this.$router.replace({path: '/home'})
+                        }
+                    })
+                    .catch(failResponse => {
+                    })
+            }
         },
     }
 </script>
