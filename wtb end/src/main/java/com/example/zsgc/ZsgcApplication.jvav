@@ -14,13 +14,13 @@ import java.sql.ResultSet;
 @MapperScan("com.example.zsgc.mapper")
 public class ZsgcApplication {
     //static String driver = "com.mysql.cj.jdbc.Driver";
-    static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    static String driver = "这里用不到！";
     //static String url = "jdbc:mysql://localhost:3306/FigureHub?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8";
-    static String url = "jdbc:sqlserver://localhost:1433;DatabaseName=bigHomework";
+    static String url = "这里用不到！";
     //static String username = "FigureHub";
-    static String username = "sa";
+    static String username = "这里用不到！";
     //static String password = "123456";
-    static String password = "wtbnb";
+    static String password = "这里用不到！";
 
     static Connection conn = null;
     static Statement stmt = null;
@@ -28,7 +28,7 @@ public class ZsgcApplication {
 
     public static void main(String[] args) {
         //创建并初始化数据库
-        initDataBase();
+        //initDataBase();
 
         SpringApplication.run(ZsgcApplication.class, args);
     }

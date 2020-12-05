@@ -28,7 +28,7 @@ public class ZsgcApplication {
 
     public static void main(String[] args) {
         //创建并初始化数据库
-        initDataBase();
+        //initDataBase();
 
         SpringApplication.run(ZsgcApplication.class, args);
     }

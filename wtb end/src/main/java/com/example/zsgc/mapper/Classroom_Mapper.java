@@ -13,7 +13,7 @@ public interface Classroom_Mapper {
     public List<Classroom> selectAll();
 
     //按照教室编号查询
-    @Select("select * from classroom where 教室编号 =  #{classroomId}") //管理员查看权限
+    @Select("select * from classroom where 教室编号 like #{classroomId}") //管理员查看权限
     public List<Classroom> selectByClassroomId(Classroom classroom);
 
     //按照教学楼查询
@@ -28,9 +28,9 @@ public interface Classroom_Mapper {
     @Insert("insert into classroom values (#{classroomId},#{teachingBuilding},#{floors},#{type})")
     public void insertClassroom(Classroom classroom);
 
-    @Update("update classroom set 教学楼名称=#{teachingBuilding}, 楼层=#{floors}, 类型=#{type} where 教师编号=#{classroomId}")
+    @Update("update classroom set 教学楼名称=#{teachingBuilding}, 楼层=#{floors}, 类型=#{type} where 教室编号=#{classroomId}")
     public void updateClassroom(Classroom classroom);
 
     @Delete("delete from classroom where 教室编号=#{classroomId}")
-    public void deleteClassroom(String classroomId);
+    public void deleteClassroom(Classroom classroom);
 }

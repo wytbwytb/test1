@@ -13,8 +13,8 @@ public interface Course_Mapper {
     public List<Course> selectAll();
 
     //按照课程编号查询
-    @Select("select * from course where 课程编号 = #{courseId}") //管理员查看权限
-    public List<Course> selectByCourseId(Course course);
+    @Select("select * from course where 课程编号 like #{courseId} or 名称 like #{name}") //管理员查看权限
+    public List<Course> selectByIdOrName(Course course);
 
     //按照课程名称查询
     @Select("select * from course where 名称 = #{name}") //管理员查看权限
@@ -31,5 +31,5 @@ public interface Course_Mapper {
     public void updateCourse(Course course);
 
     @Delete("delete from course where 课程编号=#{courseId}")
-    public void deleteCourse(String courseId);
+    public void deleteCourse(Course course);
 }

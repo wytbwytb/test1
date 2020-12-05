@@ -13,8 +13,8 @@ public interface Department_Mapper {
     public List<Department> selectAll();
 
     //按照系编号查询
-    @Select("select * from department where 系编号 = #{departmentId}") //管理员查看权限
-    public List<Department> selectByDepartmentId(Department department);
+    @Select("select * from department where 系编号 = #{departmentId} or 系名 = #{name}") //管理员查看权限
+    public List<Department> selectByIdOrName(Department department);
 
     //按照系名查询
     @Select("select * from department where 系名 = #{name}") //管理员查看权限
@@ -27,5 +27,5 @@ public interface Department_Mapper {
     public void updateDepartment(Department department);
 
     @Delete("delete from department where 系编号=#{departmentId}")
-    public void deleteDepartment(String departmentId);
+    public void deleteDepartment(Department department);
 }

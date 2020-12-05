@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1433;DatabaseName=bigHomework
+    url: jdbc:sqlserver://192.168.43.139:1433;DatabaseName=bigHomework
     username: sa
     password: wtbnb
 server:

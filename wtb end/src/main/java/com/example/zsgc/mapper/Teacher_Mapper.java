@@ -12,8 +12,8 @@ public interface Teacher_Mapper {
     @Select("select * from teacher") //管理员查看权限
     public List<Teacher> selectAll();
 
-    @Select("select * from teacher where 教师编号 = #{teacherId}") //管理员查看权限
-    public List<Teacher> selectByTeacherId(Teacher teacher);
+    @Select("select * from teacher where 教师编号 like #{teacherId} or 姓名 like #{name}") //管理员查看权限
+    public List<Teacher> selectByIdOrName(Teacher teacher);
 
     @Select("select * from teacher where 姓名 = #{name}") //管理员查看权限
     public List<Teacher> selectByName(Teacher teacher);
@@ -31,5 +31,5 @@ public interface Teacher_Mapper {
     public void updateTeacher(Teacher teacher);
 
     @Delete("delete from teacher where 教师编号=#{teacherId}")
-    public void deleteTeacher(String teacherId);
+    public void deleteTeacher(Teacher teacher);
 }

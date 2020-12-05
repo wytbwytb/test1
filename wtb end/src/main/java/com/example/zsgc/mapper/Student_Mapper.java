@@ -12,8 +12,8 @@ public interface Student_Mapper {
     @Select("select * from student") //管理员查看权限
     public List<Student> selectAll();
 
-    @Select("select * from student where 学号 = #{studentId}")
-    public List<Student> selectByStudentId(Student student);//学生界面显示个人信息
+    @Select("select * from student where 学号 like #{studentId} or 姓名 like #{name}")
+    public List<Student> selectByIdOrName(Student student);
 
     @Select("select * from student where 姓名 = #{name}")
     public List<Student> selectByName(Student student);
@@ -48,5 +48,5 @@ public interface Student_Mapper {
     public void updateStudent(Student student);
 
     @Delete("delete from student where 学号=#{studentId}")
-    public void deleteStudent(String studentId);
+    public void deleteStudent(Student student);
 }

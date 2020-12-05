@@ -12,7 +12,7 @@ public interface Class_Mapper {
     @Select("select * from class") //管理员查看权限
     public List<Class> selectAll();
     //按照班级编号查询
-    @Select("select * from class where 班级编号 = #{classId}") //管理员查看权限
+    @Select("select * from class where 班级编号 like #{classId}") //管理员查看权限
     public List<Class> selectByClassId(Class aclass);
 
     //按照系编号查询
@@ -30,5 +30,5 @@ public interface Class_Mapper {
     public void updateClass(Class aclass);
 
     @Delete("delete from class where 班级编号=#{classId}")
-    public void deleteClass(String classId);
+    public void deleteClass(Class aclass);
 }
