@@ -15,7 +15,7 @@ public interface User_Mapper {
     @Select("select * from user where 登录名 = #{userName}") //管理员查看权限
     public List<User> selectByUserName(User user);
 
-    @Select("select * from user where 登录名 = #{type}") //管理员查看权限
+    @Select("select * from user where 类型 = #{type}") //管理员查看权限
     public List<User> selectByType(User user);
 
     @Insert("insert into user values (#{userName},#{passwords},#{type},#{id})")
@@ -25,5 +25,5 @@ public interface User_Mapper {
     public void updateUser(User user);
 
     @Delete("delete from user where 登录名=#{userName}")
-    public void deleteUser(String userName);
+    public void deleteUser(User user);
 }

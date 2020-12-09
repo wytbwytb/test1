@@ -18,7 +18,6 @@
                         <el-menu-item index="deptClassStudent">班级-学生管理</el-menu-item>
                         <el-menu-item index="deptStudentCourse">学生-课程管理</el-menu-item>
                         <el-menu-item index="deptTeacherCourse">教师-课程管理</el-menu-item>
-                        <el-menu-item index="deptCourseBook">课程-书籍管理</el-menu-item>
                     </el-submenu>
                     <el-submenu index="4">
                         <template slot="title"><i class="el-icon-star-on"></i>图表</template>

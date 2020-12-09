@@ -3,6 +3,7 @@ package com.example.zsgc.controller;
 import com.example.zsgc.entity.Dormitory;
 import com.example.zsgc.mapper.Dormitory_Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,27 +22,27 @@ public class Dormitory_Controller {
     }
 
     @RequestMapping(value = {"/selectByDormitoryId"}, method = RequestMethod.POST)
-    public List<Dormitory> selectByDormitoryId(Dormitory dormitory) {
+    public List<Dormitory> selectByDormitoryId(@RequestBody Dormitory dormitory) {
         return dormitory_mapper.selectByDormitoryId(dormitory);
     }
 
     @RequestMapping(value = {"/selectByDormitoryBuilding"}, method = RequestMethod.POST)
-    public List<Dormitory> selectByDormitoryBuilding(Dormitory dormitory) {
+    public List<Dormitory> selectByDormitoryBuilding(@RequestBody Dormitory dormitory) {
         return dormitory_mapper.selectByDormitoryBuilding(dormitory);
     }
 
     @RequestMapping(value = {"/insert"}, method = RequestMethod.POST)
-    public void insertDormitory(Dormitory dormitory) {
+    public void insertDormitory(@RequestBody Dormitory dormitory) {
         dormitory_mapper.insertDormitory(dormitory);
     }
 
     @RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
-    public void updateDormitory(Dormitory dormitory) {
+    public void updateDormitory(@RequestBody Dormitory dormitory) {
         dormitory_mapper.updateDormitory(dormitory);
     }
 
-    @RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
-    public void deleteDormitory(String dormitoryId) {
-        dormitory_mapper.deleteDormitory(dormitoryId);
+    @RequestMapping(value = {"/delete"}, method = RequestMethod.POST)
+    public void deleteDormitory(@RequestBody Dormitory dormitory) {
+        dormitory_mapper.deleteDormitory(dormitory);
     }
 }

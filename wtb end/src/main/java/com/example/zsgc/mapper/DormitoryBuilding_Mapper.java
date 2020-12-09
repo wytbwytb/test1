@@ -31,5 +31,5 @@ public interface DormitoryBuilding_Mapper {
     public void updateDormitoryBuilding(DormitoryBuilding dormitoryBuilding);
 
     @Delete("delete from dormitoryBuilding where 楼号=#{dormitoryBuildingId}")
-    public void deleteDormitoryBuilding(String dormitoryBuildingId);
+    public void deleteDormitoryBuilding(DormitoryBuilding dormitoryBuilding);
 }

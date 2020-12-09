@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 public class Dormitory {
     private String dormitoryId;
     private String dormitoryBuilding;
-    private int floor;
+    private int floorr;
     private String towards;
     private String header;
 
-    public Dormitory(String dormitoryId, String dormitoryBuilding, int floor, String towards, String header) {
+    public Dormitory(String dormitoryId, String dormitoryBuilding, int floorr, String towards, String header) {
         this.dormitoryId = dormitoryId;
         this.dormitoryBuilding = dormitoryBuilding;
-        this.floor = floor;
+        this.floorr = floorr;
         this.towards = towards;
         this.header = header;
     }
@@ -24,8 +24,8 @@ public class Dormitory {
         return header;
     }
 
-    public int getFloor() {
-        return floor;
+    public int getFloorr() {
+        return floorr;
     }
 
     public void setHeader(String header) {
@@ -52,8 +52,8 @@ public class Dormitory {
         this.dormitoryId = dormitoryId;
     }
 
-    public void setFloor(int floor) {
-        this.floor = floor;
+    public void setFloorr(int floorr) {
+        this.floorr = floorr;
     }
 
     public void setTowards(String towards) {
@@ -64,7 +64,7 @@ public class Dormitory {
         return "Dormitory{" +
                 "dormitoryId='" + dormitoryId +
                 ", dormitoryBuilding='" + dormitoryBuilding + "'" +
-                ", floor=" + floor +
+                ", floor=" + floorr +
                 ", towards='" + towards + "'" +
                 ", header='" + header + "'" + "'" +
                 "}";

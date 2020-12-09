@@ -25,5 +25,5 @@ public interface TeachingBuilding_Mapper {
     public void updateTeachingBuilding(TeachingBuilding teachingBuilding);
 
     @Delete("delete from teachingBuilding where 名称=#{name}")
-    public void deleteTeachingBuilding(String name);
+    public void deleteTeachingBuilding(TeachingBuilding teachingBuilding);
 }

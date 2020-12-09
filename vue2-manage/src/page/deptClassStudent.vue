@@ -28,7 +28,7 @@
                         <el-button
                             size="small"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
+                            @click="deletenb(scope.row.studentId)">删除
                         </el-button>
                     </template>
                 </el-table-column>
@@ -38,13 +38,13 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-size="20"
+                    :page-size="10"
                     layout="total, prev, pager, next"
                     :total="count">
                 </el-pagination>
             </div>
             <div style="text-align:center">
-                <el-button @click="handleEdit()">添加学生班级关系</el-button>
+                <el-button @click="handleEdit(-1)">添加学生班级关系</el-button>
             </div>
             <el-dialog title="修改学生班级信息" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
@@ -60,7 +60,7 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="updateFood">确 定</el-button>
+                    <el-button type="primary" @click="insertOrUpdate">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -68,200 +68,134 @@
 </template>
 
 <script>
-    import headTop from '../components/headTop'
-    import {baseUrl, baseImgPath} from '@/config/env'
-    import {
-        getFoods,
-        getFoodsCount,
-        getMenu,
-        updateFood,
-        deleteFood,
-        getResturantDetail,
-        getMenuById
-    } from '@/api/getData'
-
-    export default {
-        data() {
-            return {
-                baseUrl,
-                baseImgPath,
-                restaurant_id: null,
-                offset: 0,
-                limit: 10,
-                count: 0,
-                tableData: [],
-                currentPage: 1,
-                selectTable: {},
-                dialogFormVisible: false,
-                menuOptions: [],
-                selectMenu: {},
-                selectIndex: null,
-                expendRow: [],
+export default {
+    data(){
+        return {
+            keywords:'',
+            offset: 0,
+            limit: 10,
+            count: 0,
+            tableData: [],
+            allData: [],
+            currentPage: 1,
+            addMode: 0,
+            selectTable: {},
+            dialogFormVisible: false,
+        }
+    },
+    created(){
+        this.initData();
+    },
+    methods: {
+        async initData(){
+            try{
+                this.selectAll();
+            }catch(err){
+                console.log('获取数据失败', err);
             }
         },
-        created() {
-            this.initData();
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
         },
-        computed: {
-            specs: function () {
-                let specs = [];
-                if (this.selectTable.specfoods) {
-                    this.selectTable.specfoods.forEach(item => {
-                        specs.push({
-                            specs: item.specs_name,
-                            packing_fee: item.packing_fee,
-                            price: item.price,
-                        })
-                    })
-                }
-                return specs
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            this.offset = (val - 1)*this.limit;
+            this.showAll()
+        },
+        handleEdit(row) {
+            if(row === -1) {
+                this.addMode = 1;
+                this.selectTable={};
+            }
+            else {
+                this.addMode=0;
+                this.selectTable=row
+            }
+            this.dialogFormVisible = true;
+        },
+        showAll() {
+            this.tableData=[];
+            var i,len,l,r;
+            len=this.allData.length
+            this.count=len
+            l=(this.currentPage-1)*this.limit
+            r=l+this.limit
+            for(i=l;i<r&&i<len;i++)
+            {
+                this.tableData.push({
+                    studentId: this.allData[i].student,
+                    className: this.allData[i].aclass,
+                    stuPosition: this.allData[i].position
+                })
             }
         },
-        components: {
-            headTop,
+        searchClick(){
         },
-        methods: {
-            async initData() {
-                try {
-                    const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
-                    if (countData.status == 1) {
-                        this.count = countData.count;
-                    } else {
-                        throw new Error('获取数据失败');
-                    }
-                    this.getFoods();
-                } catch (err) {
-                    console.log('获取数据失败', err);
-                }
-            },
-            async getMenu() {
-                this.menuOptions = [];
-                try {
-                    const menu = await getMenu({restaurant_id: this.selectTable.restaurant_id, allMenu: true});
-                    menu.forEach((item, index) => {
-                        this.menuOptions.push({
-                            label: item.name,
-                            value: item.id,
-                            index,
-                        })
-                    })
-                } catch (err) {
-                    console.log('获取食品种类失败', err);
-                }
-            },
-            async getFoods() {
-                const Foods = await getFoods({
-                    offset: this.offset,
-                    limit: this.limit,
-                    restaurant_id: this.restaurant_id
-                });
-                this.tableData = [];
-                Foods.forEach((item, index) => {
-                    const tableData = {};
-                    tableData.name = item.name;
-                    tableData.item_id = item.item_id;
-                    tableData.description = item.description;
-                    tableData.rating = item.rating;
-                    tableData.month_sales = item.month_sales;
-                    tableData.restaurant_id = item.restaurant_id;
-                    tableData.category_id = item.category_id;
-                    tableData.image_path = item.image_path;
-                    tableData.specfoods = item.specfoods;
-                    tableData.index = index;
-                    this.tableData.push(tableData);
+        selectAll () {
+            this.$axios
+                .get('/studentclass/selectAll')
+                .then(successResponse => {
+                    this.allData=successResponse.data
+                    this.showAll();
                 })
-            },
-            tableRowClassName(row, index) {
-                if (index === 1) {
-                    return 'info-row';
-                } else if (index === 3) {
-                    return 'positive-row';
-                }
-                return '';
-            },
-
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                this.currentPage = val;
-                this.offset = (val - 1) * this.limit;
-                this.getFoods()
-            },
-
-            handleEdit(row) {
-                this.getSelectItemData(row, 'edit')
-                this.dialogFormVisible = true;
-            },
-            async getSelectItemData(row, type) {
-                const restaurant = await getResturantDetail(row.restaurant_id);
-                const category = await getMenuById(row.category_id)
-                this.selectTable = {
-                    ...row, ...{
-                        restaurant_name: restaurant.name,
-                        restaurant_address: restaurant.address,
-                        category_name: category.name
-                    }
-                };
-
-                this.selectMenu = {label: category.name, value: row.category_id}
-                this.tableData.splice(row.index, 1, {...this.selectTable});
-                this.$nextTick(() => {
-                    this.expendRow.push(row.index);
+                .catch(failResponse => {
+                    this.$message({type: 'error',message: '获取关系失败'});
                 })
-                if (type == 'edit' && this.restaurant_id != row.restaurant_id) {
-                    this.getMenu();
-                }
-            },
-            handleSelect(index) {
-                this.selectIndex = index;
-                this.selectMenu = this.menuOptions[index];
-            },
-            async handleDelete(index, row) {
-                try {
-                    const res = await deleteFood(row.item_id);
-                    if (res.status == 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '删除食品成功'
-                        });
-                        this.tableData.splice(index, 1);
-                    } else {
-                        throw new Error(res.message)
-                    }
-                } catch (err) {
-                    this.$message({
-                        type: 'error',
-                        message: err.message
-                    });
-                    console.log('删除食品失败')
-                }
-            },
-
-            async updateFood() {
-                this.dialogFormVisible = false;
-                try {
-                    const subData = {new_category_id: this.selectMenu.value, specs: this.specs};
-                    const postData = {...this.selectTable, ...subData};
-                    const res = await updateFood(postData)
-                    if (res.status == 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '更新食品信息成功'
-                        });
-                        this.getFoods();
-                    } else {
-                        this.$message({
-                            type: 'error',
-                            message: res.message
-                        });
-                    }
-                } catch (err) {
-                    console.log('更新餐馆信息失败', err);
-                }
-            },
         },
-    }
+        insertOrUpdate() {
+            if(this.addMode===0) this.update();
+            else this.insert();
+        },
+        insert() {
+            this.dialogFormVisible = false;
+            this.$axios
+                .post('/studentclass/insert', {
+                    student: this.selectTable.studentId,
+                    aclass: this.selectTable.className,
+                    position: this.selectTable.stuPosition}
+                )
+                .then(successResponse => {
+                    //console.log(successResponse);
+                    this.$message({type: 'success',message: '添加关系成功'});
+                    this.selectAll();
+                })
+                .catch(failResponse => {
+                    this.$message({type: 'error',message: '添加关系失败'});
+                    this.showAll();
+                })
+        },
+        update() {
+            this.dialogFormVisible = false;
+            this.$axios
+                .put('/studentclass/update', {
+                    student: this.selectTable.studentId,
+                    aclass: this.selectTable.className,
+                    position: this.selectTable.stuPosition}
+                )
+                .then(successResponse => {
+                    //console.log(successResponse);
+                    this.$message({type: 'success',message: '更新关系成功'});
+                    this.selectAll();
+                })
+                .catch(failResponse => {
+                    this.$message({type: 'error',message: '更新关系失败'});
+                    this.showAll();
+                })
+        },
+        deletenb(name) {
+            this.$axios
+                .post('/studentclass/delete', {student: name})
+                .then(successResponse => {
+                    //console.log(successResponse);
+                    this.$message({type: 'success',message: '删除成功'});
+                    this.selectAll();
+                })
+                .catch(failResponse => {
+                    this.$message({type: 'error',message: '删除失败'});
+                })
+        }
+    },
+}
 </script>
 
 <style lang="less">

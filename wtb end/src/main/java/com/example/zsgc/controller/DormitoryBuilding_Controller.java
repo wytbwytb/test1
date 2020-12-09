@@ -3,6 +3,7 @@ package com.example.zsgc.controller;
 import com.example.zsgc.entity.DormitoryBuilding;
 import com.example.zsgc.mapper.DormitoryBuilding_Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,32 +22,32 @@ public class DormitoryBuilding_Controller {
     }
 
     @RequestMapping(value = {"/selectByDormitoryBuildingId"}, method = RequestMethod.POST)
-    public List<DormitoryBuilding> selectByDormitoryBuildingId(DormitoryBuilding dormitoryBuilding) {
+    public List<DormitoryBuilding> selectByDormitoryBuildingId(@RequestBody DormitoryBuilding dormitoryBuilding) {
         return dormitoryBuilding_mapper.selectByDormitoryBuildingId(dormitoryBuilding);
     }
 
     @RequestMapping(value = {"/selectByType"}, method = RequestMethod.POST)
-    public List<DormitoryBuilding> selectByType(DormitoryBuilding dormitoryBuilding) {
+    public List<DormitoryBuilding> selectByType(@RequestBody DormitoryBuilding dormitoryBuilding) {
         return dormitoryBuilding_mapper.selectByType(dormitoryBuilding);
     }
 
     @RequestMapping(value = {"/selectByRegion"}, method = RequestMethod.POST)
-    public List<DormitoryBuilding> selectByRegion(DormitoryBuilding dormitoryBuilding) {
+    public List<DormitoryBuilding> selectByRegion(@RequestBody DormitoryBuilding dormitoryBuilding) {
         return dormitoryBuilding_mapper.selectByRegion(dormitoryBuilding);
     }
 
     @RequestMapping(value = {"/insert"}, method = RequestMethod.POST)
-    public void insertDormitoryBuilding(DormitoryBuilding dormitoryBuilding) {
+    public void insertDormitoryBuilding(@RequestBody DormitoryBuilding dormitoryBuilding) {
         dormitoryBuilding_mapper.insertDormitoryBuilding(dormitoryBuilding);
     }
 
     @RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
-    public void updateDormitoryBuilding(DormitoryBuilding dormitoryBuilding) {
+    public void updateDormitoryBuilding(@RequestBody DormitoryBuilding dormitoryBuilding) {
         dormitoryBuilding_mapper.updateDormitoryBuilding(dormitoryBuilding);
     }
 
-    @RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
-    public void deleteDormitoryBuilding(String dormitoryBuildingId) {
-        dormitoryBuilding_mapper.deleteDormitoryBuilding(dormitoryBuildingId);
+    @RequestMapping(value = {"/delete"}, method = RequestMethod.POST)
+    public void deleteDormitoryBuilding(@RequestBody DormitoryBuilding dormitoryBuilding) {
+        dormitoryBuilding_mapper.deleteDormitoryBuilding(dormitoryBuilding);
     }
 }

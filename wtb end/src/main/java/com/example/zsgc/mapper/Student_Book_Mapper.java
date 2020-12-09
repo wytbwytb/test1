@@ -15,8 +15,8 @@ public interface Student_Book_Mapper {
     @Select("select * from student_book where 学号 = #{student}") //管理员查看权限
     public List<Student_Book> selectByStudent(Student_Book student_book);
 
-    @Select("select * from student_book where 图书编号 = #{book}") //管理员查看权限
-    public List<Student_Book> selectByBook(Student_Book student_book);
+    @Select("select * from student_book where 学号 like #{student} or 图书编号 like #{book}") //管理员查看权限
+    public List<Student_Book> selectById(Student_Book student_book);
 
     @Select("select * from student_book where 借阅时间 = #{borrowDate}") //管理员查看权限
     public List<Student_Book> selectByBorrowDate(Student_Book student_book);

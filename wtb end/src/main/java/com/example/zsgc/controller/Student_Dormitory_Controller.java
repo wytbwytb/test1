@@ -3,6 +3,7 @@ package com.example.zsgc.controller;
 import com.example.zsgc.entity.Student_Dormitory;
 import com.example.zsgc.mapper.Student_Dormitory_Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,27 +22,27 @@ public class Student_Dormitory_Controller {
     }
 
     @RequestMapping(value = {"/selectByStudent"}, method = RequestMethod.POST)
-    public List<Student_Dormitory> selectByStudent(Student_Dormitory student_dormitory) {
+    public List<Student_Dormitory> selectByStudent(@RequestBody Student_Dormitory student_dormitory) {
         return student_dormitory_mapper.selectByStudent(student_dormitory);
     }
 
     @RequestMapping(value = {"/selectByDormitory"}, method = RequestMethod.POST)
-    public List<Student_Dormitory> selectByDormitory(Student_Dormitory student_dormitory) {
+    public List<Student_Dormitory> selectByDormitory(@RequestBody Student_Dormitory student_dormitory) {
         return student_dormitory_mapper.selectByDormitory(student_dormitory);
     }
 
     @RequestMapping(value = {"/insert"}, method = RequestMethod.POST)
-    public void insertStudent_Dormitory(Student_Dormitory student_dormitory) {
+    public void insertStudent_Dormitory(@RequestBody Student_Dormitory student_dormitory) {
         student_dormitory_mapper.insertStudent_Dormitory(student_dormitory);
     }
 
     @RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
-    public void updateStudent_Dormitory(Student_Dormitory student_dormitory) {
+    public void updateStudent_Dormitory(@RequestBody Student_Dormitory student_dormitory) {
         student_dormitory_mapper.updateStudent_Dormitory(student_dormitory);
     }
 
-    @RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
-    public void deleteStudent_Dormitory(Student_Dormitory student_dormitory) {
+    @RequestMapping(value = {"/delete"}, method = RequestMethod.POST)
+    public void deleteStudent_Dormitory(@RequestBody Student_Dormitory student_dormitory) {
         student_dormitory_mapper.deleteStudent_Dormitory(student_dormitory);
     }
 }

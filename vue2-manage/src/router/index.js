@@ -24,7 +24,6 @@ const deptCourseList = r => require.ensure([], () => r(require('@/page/deptCours
 const deptClassStudent = r => require.ensure([], () => r(require('@/page/deptClassStudent')), 'deptClassStudent');
 const deptStudentCourse = r => require.ensure([], () => r(require('@/page/deptStudentCourse')), 'deptStudentCourse');
 const deptTeacherCourse = r => require.ensure([], () => r(require('@/page/deptTeacherCourse')), 'deptTeacherCourse');
-const deptCourseBook = r => require.ensure([], () => r(require('@/page/deptCourseBook')), 'deptCourseBook');
 
 const otherManage = r => require.ensure([], () => r(require('@/page/otherManage')), 'otherManage');
 const otherAssociation = r => require.ensure([], () => r(require('@/page/otherAssociation')), 'otherAssociation');
@@ -209,10 +208,6 @@ const routes = [
             component: deptClassStudent,
             meta: ['关系管理', '班级-学生'],
         }, {
-            path: '/deptCourseBook',
-            component: deptCourseBook,
-            meta: ['关系管理', '课程书籍'],
-        }, {
             path: '/deptStudentCourse',
             component: deptStudentCourse,
             meta: ['关系管理', '学生选课'],
@@ -258,10 +253,6 @@ const routes = [
             path: '/deptClassStudent',
             component: deptClassStudent,
             meta: ['关系管理', '班级-学生'],
-        }, {
-            path: '/deptCourseBook',
-            component: deptCourseBook,
-            meta: ['关系管理', '课程书籍'],
         }, {
             path: '/deptStudentCourse',
             component: deptStudentCourse,

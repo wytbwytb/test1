@@ -14,7 +14,7 @@ public interface Association_Mapper {
     @Select("select * from association") //管理员查看权限
     public List<Association> selectAll();
 
-    @Select("select * from association where 名称 = #{name}") //按照社团名字查询
+    @Select("select * from association where 名称 like #{name}") //按照社团名字查询
     public List<Association> selectByName(Association association);
 
     //教师查询个人信息
@@ -36,5 +36,5 @@ public interface Association_Mapper {
     public void updateAssociation(Association association);
 
     @Delete("delete from association where 名称=#{name}")
-    public void deleteAssociation(String name);
+    public void deleteAssociation(Association association);
 }

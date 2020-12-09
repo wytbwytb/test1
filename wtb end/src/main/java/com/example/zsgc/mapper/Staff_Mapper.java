@@ -17,8 +17,8 @@ public interface Staff_Mapper {
     public List<Staff> selectByStaffId(Staff staff);
 
     //按照姓名
-    @Select("select * from staff where 姓名 = #{name}") //管理员查看权限
-    public List<Staff> selectByName(Staff staff);
+    @Select("select * from staff where 职工编号 like #{staffId} or 姓名 like #{name}") //管理员查看权限
+    public List<Staff> selectByIdOrName(Staff staff);
 
     //按照性别
     @Select("select * from staff where 性别 = #{gender}") //管理员查看权限
@@ -31,5 +31,5 @@ public interface Staff_Mapper {
     public void updateStaff(Staff staff);
 
     @Delete("delete from staff where 职工编号=#{staffId}")
-    public void deleteStaff(String staffId);
+    public void deleteStaff(Staff staff);
 }

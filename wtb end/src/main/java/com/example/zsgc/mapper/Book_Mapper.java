@@ -15,8 +15,8 @@ public interface Book_Mapper {
     @Select("select * from book where 图书编号 = #{bookId}") //管理员查看权限
     public List<Book> selectByBookId(Book book);
     //按名字查询
-    @Select("select * from book where 书名 like N'%#{name}%'") //管理员查看权限
-    public List<Book> selectByName(Book book);
+    @Select("select * from book where 书名 like #{name} or 图书编号 like #{bookId}") //管理员查看权限
+    public List<Book> selectByIdOrName(Book book);
 
     //按借阅状态查询
     @Select("select * from book where 借阅状态 = #{state}") //管理员查看权限
@@ -29,5 +29,5 @@ public interface Book_Mapper {
     public void updateBook(Book book);
 
     @Delete("delete from book where 图书编号=#{bookId}")
-    public void deleteBook(String bookId);
+    public void deleteBook(Book book);
 }

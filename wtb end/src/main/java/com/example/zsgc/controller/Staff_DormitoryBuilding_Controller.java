@@ -3,6 +3,7 @@ package com.example.zsgc.controller;
 import com.example.zsgc.entity.Staff_DormitoryBuilding;
 import com.example.zsgc.mapper.Staff_DormitoryBuilding_Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,27 +22,27 @@ public class Staff_DormitoryBuilding_Controller {
     }
 
     @RequestMapping(value = {"/selectByStaff"}, method = RequestMethod.POST)
-    public List<Staff_DormitoryBuilding> selectByStaff(Staff_DormitoryBuilding staff_DormitoryBuilding) {
+    public List<Staff_DormitoryBuilding> selectByStaff(@RequestBody Staff_DormitoryBuilding staff_DormitoryBuilding) {
         return staff_DormitoryBuilding_mapper.selectByStaff(staff_DormitoryBuilding);
     }
 
     @RequestMapping(value = {"/selectByDormitory"}, method = RequestMethod.POST)
-    public List<Staff_DormitoryBuilding> selectByDormitory(Staff_DormitoryBuilding staff_DormitoryBuilding) {
+    public List<Staff_DormitoryBuilding> selectByDormitory(@RequestBody Staff_DormitoryBuilding staff_DormitoryBuilding) {
         return staff_DormitoryBuilding_mapper.selectByDormitory(staff_DormitoryBuilding);
     }
 
     @RequestMapping(value = {"/insert"}, method = RequestMethod.POST)
-    public void insertStaff_DormitoryBuilding(Staff_DormitoryBuilding staff_DormitoryBuilding) {
+    public void insertStaff_DormitoryBuilding(@RequestBody Staff_DormitoryBuilding staff_DormitoryBuilding) {
         staff_DormitoryBuilding_mapper.insertStaff_DormitoryBuilding(staff_DormitoryBuilding);
     }
 
     @RequestMapping(value = {"/update"}, method = RequestMethod.PUT)
-    public void updateStaff_DormitoryBuilding(Staff_DormitoryBuilding staff_DormitoryBuilding) {
+    public void updateStaff_DormitoryBuilding(@RequestBody Staff_DormitoryBuilding staff_DormitoryBuilding) {
         staff_DormitoryBuilding_mapper.updateStaff_DormitoryBuilding(staff_DormitoryBuilding);
     }
 
-    @RequestMapping(value = {"/delete"}, method = RequestMethod.DELETE)
-    public void deleteStaff_DormitoryBuilding(Staff_DormitoryBuilding staff_DormitoryBuilding) {//传入一个类
+    @RequestMapping(value = {"/delete"}, method = RequestMethod.POST)
+    public void deleteStaff_DormitoryBuilding(@RequestBody Staff_DormitoryBuilding staff_DormitoryBuilding) {//传入一个类
         staff_DormitoryBuilding_mapper.deleteStaff_DormitoryBuilding(staff_DormitoryBuilding);
     }
 }
