@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -59,6 +60,35 @@ public class Student_Controller {
     @RequestMapping(value = {"/queryAssociation"}, method = RequestMethod.POST)
     public List<Query_Student_Association> queryAssociation(@RequestBody Student student) {
         return student_mapper.queryAssociation(student);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public List<Query_special> querySpecialMax(Student student){
+        List<Query_special> list = new LinkedList<>();
+        List<Student> students = student_mapper.selectAll();
+        for (Student student2 : students) {
+            //如果是自身，则跳过
+            if (student2.getStudentId().equals(student.getStudentId())) {
+                continue;
+            }
+            StudentDouble studentDouble = new StudentDouble(student.getStudentId(), student.getName(), student2.getStudentId(), student2.getName());
+            list.add(querySpecial(studentDouble));
+        }
+        return list;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public Query_special querySpecial(@RequestBody StudentDouble studentDouble){
+        int same_course, same_course_teacher, same_association, same_dormitoryBuilding, same_dormitoryBuilding_place, same_book, same_class, same_department;
+        same_course = student_mapper.querySameCourse(studentDouble);
+        same_course_teacher = student_mapper.querySameCourseTeacher(studentDouble);
+        same_association = student_mapper.querySameAssociation(studentDouble);
+        same_dormitoryBuilding = student_mapper.querySameDormitoryBuilding(studentDouble);
+        same_dormitoryBuilding_place = student_mapper.querySamePlace(studentDouble);
+        same_book = student_mapper.querySameBook(studentDouble);
+        same_class = student_mapper.querySameClass(studentDouble);
+        same_department = student_mapper.querySameDepartment(studentDouble);
+        return new Query_special(same_course,same_course_teacher,same_association,same_dormitoryBuilding,same_dormitoryBuilding_place,same_book,same_class,same_department);
     }
 
     @RequestMapping(value = {"/insert"}, method = RequestMethod.POST)

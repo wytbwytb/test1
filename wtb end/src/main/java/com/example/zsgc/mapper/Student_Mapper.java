@@ -41,6 +41,76 @@ public interface Student_Mapper {
             "where Association.名称 = [Student-Association].社团名称 and [Student-Association].学号 = #{studentId}")
     public List<Query_Student_Association> queryAssociation(Student student);
 
+    @Select("select count(*) from" +
+            "    (select 课程号 from Student_Course" +
+            "    where 学号 = #{studentId1}" +
+            "    intersect" +
+            "    select 课程号 from Student_Course" +
+            "    where 学号 = #{studentId2}) as Same_Course")
+    public int querySameCourse(StudentDouble studentDouble);
+
+    @Select("select count(*) from" +
+            "    (select 课程号, 教师编号 from Student_Course" +
+            "     where 学号 = #{studentId1}" +
+            "     intersect" +
+            "    select 课程号, 教师编号 from Student_Course" +
+            "    where 学号 = #{studentId2}) as Same_Teacher")
+    public int querySameCourseTeacher(StudentDouble studentDouble);
+
+    @Select("select count(*) from" +
+            "    (select 社团名称 from [Student-Association]" +
+            "    where 学号 = #{studentId1}" +
+            "    intersect" +
+            "    select 社团名称 from [Student-Association]" +
+            "    where 学号 = #{studentId2}'" +
+            "        ) as Same_Asso")
+    public int querySameAssociation(StudentDouble studentDouble);
+
+    @Select("select count(*) from" +
+            "    (select 宿舍楼号 from [Student-Dormitory], Dormitory" +
+            "    where 学号 = #{studentId1} and [Student-Dormitory].寝室 = Dormitory.寝室号" +
+            "    intersect" +
+            "     select 宿舍楼号 from [Student-Dormitory], Dormitory" +
+            "    where 学号 = #{studentId2} and [Student-Dormitory].寝室 = Dormitory.寝室号" +
+            "    ) as Same_DB")
+    public int querySameDormitoryBuilding(StudentDouble studentDouble);
+
+    @Select("select count(*) from" +
+            "    (select 所处区域 from [Student-Dormitory], Dormitory, DormitoryBuilding" +
+            "     where 学号 = #{studentId1} and [Student-Dormitory].寝室 = Dormitory.寝室号 and Dormitory.宿舍楼号 = DormitoryBuilding.楼号" +
+            "     intersect" +
+            "     select 所处区域 from [Student-Dormitory], Dormitory, DormitoryBuilding" +
+            "     where 学号 = #{studentId2} and [Student-Dormitory].寝室 = Dormitory.寝室号 and Dormitory.宿舍楼号 = DormitoryBuilding.楼号" +
+            "    ) as Same_Place")
+    public int querySamePlace(StudentDouble studentDouble);
+
+    @Select("select count(*) from" +
+            "    (select 图书编号 from Student_Book" +
+            "        where 学号 = #{studentId1}" +
+            "    intersect" +
+            "     select 图书编号 from Student_Book" +
+            "     where 学号 = #{studentId2}" +
+            "        ) as Same_book")
+    public int querySameBook(StudentDouble studentDouble);
+
+    @Select("select count(*) from" +
+            "    (select 班级 from Student_Class" +
+            "        where 学生编号 = #{studentId1}" +
+            "    intersect" +
+            "     select 班级 from Student_Class" +
+            "     where 学生编号 = #{studentId2}" +
+            "        ) as Same_Class")
+    public int querySameClass(StudentDouble studentDouble);
+
+    @Select("select count(*) from" +
+            "    (select 系编号 from Student_Class, Class" +
+            "        where 学生编号 = #{studentId1} and Student_Class.班级 = Class.班级编号" +
+            "    intersect" +
+            "     select 系编号 from Student_Class, Class" +
+            "     where 学生编号 = #{studentId2} and Student_Class.班级 = Class.班级编号" +
+            "        )as Same_De")
+    public int querySameDepartment(StudentDouble studentDouble);
+
     @Insert("insert into student values (#{studentId},#{name},#{gender},#{region},#{age})")
     public void insertStudent(Student student);
 
