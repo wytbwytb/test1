@@ -1,6 +1,6 @@
 <template>
-    <div class="visitorpie">
-        <div id="visitorpie" class="" style="width: 90%;height:450px;"></div>
+    <div class="agePie">
+        <div id="agePie" class="" style="width: 90%;height:450px;"></div>
     </div>
 </template>
 
@@ -10,18 +10,17 @@
     import 'echarts/lib/chart/pie';
     import 'echarts/lib/component/title';
     import 'echarts/lib/component/legend';
-
     export default {
         mounted(){
-            this.myChart = echarts.init(document.getElementById('visitorpie'));
+            this.myChart = echarts.init(document.getElementById('agePie'));
             this.initData();
         },
-        props: ['pieData2'],
+        props: ['pieData'],
         methods: {
             initData(){
                 const option = {
                     title : {
-                        text: '用户分布',
+                        text: '分布',
                         subtext: '',
                         x:'center'
                     },
@@ -32,7 +31,7 @@
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['北京','上海','深圳','杭州','其他']
+                        data: ['18','19','20','21','22']
                     },
                     series : [
                         {
@@ -41,11 +40,14 @@
                             radius : '55%',
                             center: ['50%', '60%'],
                             data:[
-                                {value:1000, name:'北京'},
-                                {value:200, name:'上海'},
-                                {value:200, name:'深圳'},
-                                {value:200, name:'杭州'},
-                                {value:500, name:'其他'}
+                                {value:10, name:'18'},
+                                {value:50, name:'19'},
+                                {value:70, name:'20'},
+                                {value:60, name:'21'},
+                                {value:10, name:'22'},
+                                /*{value:this.pieData.hangzhou, name:'杭州'},
+                                {value:this.pieData.qita, name:'其他'}*/
+
                             ],
                             itemStyle: {
                                 emphasis: {
@@ -70,8 +72,8 @@
 </script>
 
 <style lang="less">
-	@import '../style/mixin';
-    .visitorpie{
+    @import '../style/mixin';
+    .agePie{
         display: flex;
         justify-content: center;
         margin-top: 20px;

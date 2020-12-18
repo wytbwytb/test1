@@ -1,6 +1,6 @@
 <template>
-    <div class="line1">
-        <div id="line1" class="" style="width: 90%;height:450px;"></div>
+    <div class="line2">
+        <div id="line2" class="" style="width: 90%;height:450px;"></div>
     </div>
 </template>
 
@@ -16,24 +16,24 @@
     import 'echarts/lib/component/tooltip';
     export default {
         mounted(){
-            this.myChart = echarts.init(document.getElementById('line1'));
+            this.myChart = echarts.init(document.getElementById('line2'));
             this.initData();
         },
-        props: ['sevenDate', 'sevenDay'],
+        props: ['twDate', 'twDay'],
         methods: {
             initData(){
                 const colors = ['#5793f3', '#675bba', '#d14a61'];
                 const option = {
                     color: colors,
                     title: {
-                        text: '走势图',
+                        text: '图书借阅月份走势图',
                         subtext: ''
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     legend: {
-                        data:['新注册用户', '新增订单', '新增管理员']
+                        data:['借书次数', '低年级学生借阅次数', '高年级学生借阅次数']
                     },
                     toolbox: {
                         show: true,
@@ -49,46 +49,33 @@
                     xAxis:  {
                         type: 'category',
                         boundaryGap: false,
-                        data: [1,2,3,4,5,6,7],
+                        //data: this.twDay
+                        data : [1,2,3,4,5,6,7,8,9,10,11,12],
                     },
                     yAxis: [
                         {
-                          type: 'value',
-                          name: '用户',
-                          min: 0,
-                          max: 200,
-                          position: 'left',
-                          axisLine: {
-                              lineStyle: {
-                                  color: '#999'
-                              }
-                          },
-                          axisLabel: {
-                              formatter: '{value}'
-                          }
-                        },
-                        {
-                          type: 'value',
-                          name: '订单',
-                          min: 0,
-                          max: 200,
-                          position: 'right',
-                          axisLine: {
-                              lineStyle: {
-                                  color: '#999'
-                              }
-                          },
-                          axisLabel: {
-                              formatter: '{value}'
-                          }
+                            type: 'value',
+                            name: '次数',
+                            min: 0,
+                            max: 200,
+                            position: 'left',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#999'
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value}'
+                            }
                         },
                     ],
                     series: [
                         {
-                            name:'新注册用户',
+                            name:'借书次数',
                             type:'line',
-                            data:[1,2,3,4,5,6,7],
-                            yAxisIndex: 1,
+                            //data:this.twDate[0],
+                            data :[1,2,8,4,5,6,7,8,9,10,11,12],
+                            yAxisIndex: 0,
                             markPoint: {
                                 data: [
                                     {type: 'max', name: '最大值'},
@@ -97,10 +84,11 @@
                             },
                         },
                         {
-                            name:'新增订单',
+                            name:'低年级学生借阅次数',
                             type:'line',
-                            data:[1,2,3,4,5,6,7],
-                            yAxisIndex: 1,
+                            //data:this.twDate[1],
+                            data:[1,2,3,4,5,6,7,8,9,10,11,12],
+                            yAxisIndex: 0,
                             markPoint: {
                                 data: [
                                     {type: 'max', name: '最大值'},
@@ -109,10 +97,11 @@
                             },
                         },
                         {
-                            name:'新增管理员',
+                            name:'高年级学生借阅次数',
                             type:'line',
-                            data:[1,2,3,4,5,6,7],
-                            yAxisIndex: 1,
+                            //data:this.twDate[2],
+                            data:[1,2,3,4,5,2,7,8,9,10,11,12],
+                            yAxisIndex: 0,
                             markPoint: {
                                 data: [
                                     {type: 'max', name: '最大值'},
@@ -121,15 +110,15 @@
                             },
                         }
                     ]
-              };
+                };
                 this.myChart.setOption(option);
             }
         },
         watch: {
-            sevenDate: function (){
+            twDate: function (){
                 this.initData()
             },
-            sevenDay: function (){
+            twDay: function (){
                 this.initData()
             }
         }
@@ -137,8 +126,8 @@
 </script>
 
 <style lang="less">
-	@import '../style/mixin';
-    .line1{
+    @import '../style/mixin';
+    .line2{
         display: flex;
         justify-content: center;
     }

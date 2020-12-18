@@ -24,6 +24,9 @@ const deptCourseList = r => require.ensure([], () => r(require('@/page/deptCours
 const deptClassStudent = r => require.ensure([], () => r(require('@/page/deptClassStudent')), 'deptClassStudent');
 const deptStudentCourse = r => require.ensure([], () => r(require('@/page/deptStudentCourse')), 'deptStudentCourse');
 const deptTeacherCourse = r => require.ensure([], () => r(require('@/page/deptTeacherCourse')), 'deptTeacherCourse');
+const deptSex = r => require.ensure([], () => r(require('@/page/deptSex')), 'deptSex');
+const deptAge = r => require.ensure([], () => r(require('@/page/deptAge')), 'deptAge');
+const deptGrade = r => require.ensure([], () => r(require('@/page/deptGrade')), 'deptGrade');
 
 const otherManage = r => require.ensure([], () => r(require('@/page/otherManage')), 'otherManage');
 const otherAssociation = r => require.ensure([], () => r(require('@/page/otherAssociation')), 'otherAssociation');
@@ -70,11 +73,11 @@ const routes = [
             path: '/studentGrade',
             component: studentGrade,
             meta: [],
-        },{
+        }, {
             path: '/studentSelectCourse',
             component: studentSelectCourse,
             meta: ['添加数据', '添加商铺'],
-        },{
+        }, {
             path: '/studentBorrowBook',
             component: studentBorrowBook,
         }]
@@ -218,6 +221,18 @@ const routes = [
         }, {
             path: '/libVisitor',
             component: libVisitor,
+            meta: ['图表', '借阅书籍分布'],
+        }, {
+            path: '/deptSex',
+            component: deptSex,
+            meta: ['图表', '借阅书籍分布'],
+        }, {
+            path: '/deptAge',
+            component: deptAge,
+            meta: ['图表', '借阅书籍分布'],
+        }, {
+            path: '/deptGrade',
+            component: deptGrade,
             meta: ['图表', '借阅书籍分布'],
         }]
     },
