@@ -1,43 +1,56 @@
 <template>
     <div class="fillcontain">
-        <!--div style="text-align: center">
-            <p>GPA is  {{gpa}}    </p>
-        </div-->
-        <div class="data_list"><span class="data_num">GPA：{{gpa}}</span></div>
+        <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
+            <el-input
+                @keyup.enter.native="searchClick"
+                placeholder="通过社团名查询..."
+                prefix-icon="el-icon-search"
+                size="small"
+                style="width: 400px;margin-right: 10px"
+                v-model="keywords">
+            </el-input>
+            <el-button size="small" type="primary" icon="el-icon-search" @click="searchClick">搜索</el-button>
+
+        </div>
+
         <div class="table_container">
+
             <el-table
                 :data="tableData"
                 highlight-current-row
                 style="width: 100%">
-
                 <el-table-column
-                    label="课程号"
-                    prop="courseId">
+                    label="社团名称"
+                    prop="clubName">
                 </el-table-column>
                 <el-table-column
-                    label="课程名称"
-                    prop="courseName">
+                    label="指导老师"
+                    prop="clubTeacher">
                 </el-table-column>
                 <el-table-column
-                    label="教师编号"
-                    prop="teacherId">
+                    label="星级"
+                    prop="clubStar">
                 </el-table-column>
-                <el-table-column
-                    label="成绩"
-                    prop="grade">
+                <el-table-column label="操作" width="160">
+                    <template slot-scope="scope">
+                        <el-button
+                            size="small"
+                            @click="handleEdit(scope.row)">选课/退课</el-button>
+                    </template>
                 </el-table-column>
-
             </el-table>
+
             <div class="Pagination">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-size="20"
+                    :page-size="10"
                     layout="total, prev, pager, next"
                     :total="count">
                 </el-pagination>
             </div>
+
         </div>
     </div>
 </template>
@@ -45,28 +58,20 @@
 <script>
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
-    import {
-        getFoods,
-        getFoodsCount,
-        getMenu,
-        updateFood,
-        deleteFood,
-        getResturantDetail,
-        getMenuById
-    } from '@/api/getData'
-
+    import {getFoods, getFoodsCount, getMenu, updateFood, deleteFood, getResturantDetail, getMenuById} from '@/api/getData'
     export default {
-        data() {
+        data(){
             return {
                 baseUrl,
                 baseImgPath,
-                gpa: 0,
+                keywords:'',
                 restaurant_id: null,
                 offset: 0,
                 limit: 10,
                 count: 0,
                 tableData: [],
                 currentPage: 1,
+                addMode: 0,
                 selectTable: {},
                 dialogFormVisible: false,
                 menuOptions: [],
@@ -75,11 +80,11 @@
                 expendRow: [],
             }
         },
-        created() {
+        created(){
             this.initData();
         },
         computed: {
-            specs: function () {
+            specs: function (){
                 let specs = [];
                 if (this.selectTable.specfoods) {
                     this.selectTable.specfoods.forEach(item => {
@@ -97,22 +102,23 @@
             headTop,
         },
         methods: {
-            async initData() {
-                try {
-                    const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
+            async initData(){
+                try{
+                    /*const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
                     if (countData.status == 1) {
                         this.count = countData.count;
-                    } else {
+                    }else{
                         throw new Error('获取数据失败');
                     }
-                    this.getFoods();
-                } catch (err) {
+                    this.getFoods();*/
+                    this.selectAll();
+                }catch(err){
                     console.log('获取数据失败', err);
                 }
             },
-            async getMenu() {
+            async getMenu(){
                 this.menuOptions = [];
-                try {
+                try{
                     const menu = await getMenu({restaurant_id: this.selectTable.restaurant_id, allMenu: true});
                     menu.forEach((item, index) => {
                         this.menuOptions.push({
@@ -121,16 +127,12 @@
                             index,
                         })
                     })
-                } catch (err) {
+                }catch(err){
                     console.log('获取食品种类失败', err);
                 }
             },
-            async getFoods() {
-                const Foods = await getFoods({
-                    offset: this.offset,
-                    limit: this.limit,
-                    restaurant_id: this.restaurant_id
-                });
+            /*async getFoods(){
+                const Foods = await getFoods({offset: this.offset, limit: this.limit, restaurant_id: this.restaurant_id});
                 this.tableData = [];
                 Foods.forEach((item, index) => {
                     const tableData = {};
@@ -146,7 +148,7 @@
                     tableData.index = index;
                     this.tableData.push(tableData);
                 })
-            },
+            },*/
             tableRowClassName(row, index) {
                 if (index === 1) {
                     return 'info-row';
@@ -161,24 +163,25 @@
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.offset = (val - 1) * this.limit;
+                this.offset = (val - 1)*this.limit;
                 this.getFoods()
             },
 
             handleEdit(row) {
-                this.getSelectItemData(row, 'edit')
+                if(row === -1) {
+                    this.addMode = 1;
+                    this.selectTable={};
+                }
+                else {
+                    this.addMode=0;
+                    this.getSelectItemData(row, 'edit')
+                }
                 this.dialogFormVisible = true;
             },
-            async getSelectItemData(row, type) {
+            async getSelectItemData(row, type){
                 const restaurant = await getResturantDetail(row.restaurant_id);
                 const category = await getMenuById(row.category_id)
-                this.selectTable = {
-                    ...row, ...{
-                        restaurant_name: restaurant.name,
-                        restaurant_address: restaurant.address,
-                        category_name: category.name
-                    }
-                };
+                this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name,classHelper:restaurant}};
 
                 this.selectMenu = {label: category.name, value: row.category_id}
                 this.tableData.splice(row.index, 1, {...this.selectTable});
@@ -189,12 +192,12 @@
                     this.getMenu();
                 }
             },
-            handleSelect(index) {
+            handleSelect(index){
                 this.selectIndex = index;
                 this.selectMenu = this.menuOptions[index];
             },
             async handleDelete(index, row) {
-                try {
+                try{
                     const res = await deleteFood(row.item_id);
                     if (res.status == 1) {
                         this.$message({
@@ -202,10 +205,10 @@
                             message: '删除食品成功'
                         });
                         this.tableData.splice(index, 1);
-                    } else {
+                    }else{
                         throw new Error(res.message)
                     }
-                } catch (err) {
+                }catch(err){
                     this.$message({
                         type: 'error',
                         message: err.message
@@ -214,9 +217,9 @@
                 }
             },
 
-            async updateFood() {
+            async updateFood(){
                 this.dialogFormVisible = false;
-                try {
+                try{
                     const subData = {new_category_id: this.selectMenu.value, specs: this.specs};
                     const postData = {...this.selectTable, ...subData};
                     const res = await updateFood(postData)
@@ -226,66 +229,122 @@
                             message: '更新食品信息成功'
                         });
                         this.getFoods();
-                    } else {
+                    }else{
                         this.$message({
                             type: 'error',
                             message: res.message
                         });
                     }
-                } catch (err) {
+                }catch(err){
                     console.log('更新餐馆信息失败', err);
                 }
             },
+            searchClick(){
+                //wdnmd
+            },
+            selectAll () {
+                this.$axios
+                    .get('/class/selectAll', {})
+                    .then(successResponse => {
+                        console.log(successResponse);
+                        this.tableData=[];
+                        var i;
+                        for(i=0;i<successResponse.data.length;i++)
+                        {
+                            //console.log(successResponse.data[i]);
+                            this.tableData.push({
+                                classId: successResponse.data[i].classId,
+                                className: successResponse.data[i].department,
+                                classMaster: successResponse.data[i].header,
+                                classHelper: successResponse.data[i].classMaster,
+                                //wdnmd classHelper
+                            })
+                        }
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '获取班级信息失败'});
+                    })
+            },
+            insertOrUpdate() {
+                if(this.addMode===0) this.update();
+                else this.insert();
+            },
+            insert() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .post('/class/insert', {
+                        classId: this.selectTable.classId,
+                        department: this.selectTable.className,
+                        header: this.selectTable.classMaster,
+                        helper:this.selectTable.classHelper,
+                        counsellor: "wdnmd2"}
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '添加班级信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '添加班级信息失败'});
+                    })
+            },
+            update() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .put('/class/update', {
+                        classId: this.selectTable.name,
+                        department: this.selectTable.description,
+                        header: this.selectTable.rating,
+                        counsellor: "wdnmd"}
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '更新班级信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '更新班级信息失败'});
+                    })
+            },
+            deletenb(name) {
+                console.log(name);
+                this.$axios
+                    .post('/class/delete', {classId: name})
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success',message: '删除成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '删除失败'});
+                    })
+            }
         },
     }
 </script>
 
 <style lang="less">
     @import '../style/mixin';
-    .data_list{
-        text-align: center;
-        font-size: 14px;
-        color: #666;
-        border-radius: 6px;
-        background: #E5E9F2;
-        .data_num{
-            color: #333;
-            font-size: 26px;
-
-        }
-        .head{
-            border-radius: 6px;
-            font-size: 22px;
-            padding: 4px 0;
-            color: #fff;
-            display: inline-block;
-        }
-    }
     .demo-table-expand {
         font-size: 0;
     }
-
     .demo-table-expand label {
         width: 90px;
         color: #99a9bf;
     }
-
     .demo-table-expand .el-form-item {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
     }
-
-    .table_container {
+    .table_container{
         padding: 20px;
     }
-
-    .Pagination {
+    .Pagination{
         display: flex;
         justify-content: flex-start;
         margin-top: 8px;
     }
-
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -293,11 +352,9 @@
         position: relative;
         overflow: hidden;
     }
-
     .avatar-uploader .el-upload:hover {
         border-color: #20a0ff;
     }
-
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
@@ -306,7 +363,6 @@
         line-height: 120px;
         text-align: center;
     }
-
     .avatar {
         width: 120px;
         height: 120px;

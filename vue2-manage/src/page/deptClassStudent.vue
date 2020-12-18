@@ -1,6 +1,6 @@
 <template>
     <div class="fillcontain">
-
+        <head-top></head-top>
         <div class="table_container">
             <el-table
                 :data="tableData"
@@ -68,134 +68,138 @@
 </template>
 
 <script>
-export default {
-    data(){
-        return {
-            keywords:'',
-            offset: 0,
-            limit: 10,
-            count: 0,
-            tableData: [],
-            allData: [],
-            currentPage: 1,
-            addMode: 0,
-            selectTable: {},
-            dialogFormVisible: false,
-        }
-    },
-    created(){
-        this.initData();
-    },
-    methods: {
-        async initData(){
-            try{
-                this.selectAll();
-            }catch(err){
-                console.log('获取数据失败', err);
+    import headTop from "../components/headTop";
+    export default {
+        data() {
+            return {
+                keywords: '',
+                offset: 0,
+                limit: 10,
+                count: 0,
+                tableData: [],
+                allData: [],
+                currentPage: 1,
+                addMode: 0,
+                selectTable: {},
+                dialogFormVisible: false,
             }
         },
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
+        components:{
+          headTop,
         },
-        handleCurrentChange(val) {
-            this.currentPage = val;
-            this.offset = (val - 1)*this.limit;
-            this.showAll()
+        created() {
+            this.initData();
         },
-        handleEdit(row) {
-            if(row === -1) {
-                this.addMode = 1;
-                this.selectTable={};
-            }
-            else {
-                this.addMode=0;
-                this.selectTable=row
-            }
-            this.dialogFormVisible = true;
-        },
-        showAll() {
-            this.tableData=[];
-            var i,len,l,r;
-            len=this.allData.length
-            this.count=len
-            l=(this.currentPage-1)*this.limit
-            r=l+this.limit
-            for(i=l;i<r&&i<len;i++)
-            {
-                this.tableData.push({
-                    studentId: this.allData[i].student,
-                    className: this.allData[i].aclass,
-                    stuPosition: this.allData[i].position
-                })
-            }
-        },
-        searchClick(){
-        },
-        selectAll () {
-            this.$axios
-                .get('/studentclass/selectAll')
-                .then(successResponse => {
-                    this.allData=successResponse.data
-                    this.showAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '获取关系失败'});
-                })
-        },
-        insertOrUpdate() {
-            if(this.addMode===0) this.update();
-            else this.insert();
-        },
-        insert() {
-            this.dialogFormVisible = false;
-            this.$axios
-                .post('/studentclass/insert', {
-                    student: this.selectTable.studentId,
-                    aclass: this.selectTable.className,
-                    position: this.selectTable.stuPosition}
-                )
-                .then(successResponse => {
-                    //console.log(successResponse);
-                    this.$message({type: 'success',message: '添加关系成功'});
+        methods: {
+            async initData() {
+                try {
                     this.selectAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '添加关系失败'});
-                    this.showAll();
-                })
+                } catch (err) {
+                    console.log('获取数据失败', err);
+                }
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.offset = (val - 1) * this.limit;
+                this.showAll()
+            },
+            handleEdit(row) {
+                if (row === -1) {
+                    this.addMode = 1;
+                    this.selectTable = {};
+                } else {
+                    this.addMode = 0;
+                    this.selectTable = row
+                }
+                this.dialogFormVisible = true;
+            },
+            showAll() {
+                this.tableData = [];
+                var i, len, l, r;
+                len = this.allData.length
+                this.count = len
+                l = (this.currentPage - 1) * this.limit
+                r = l + this.limit
+                for (i = l; i < r && i < len; i++) {
+                    this.tableData.push({
+                        studentId: this.allData[i].student,
+                        className: this.allData[i].aclass,
+                        stuPosition: this.allData[i].position
+                    })
+                }
+            },
+            searchClick() {
+            },
+            selectAll() {
+                this.$axios
+                    .get('/studentclass/selectAll')
+                    .then(successResponse => {
+                        this.allData = successResponse.data
+                        this.showAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '获取关系失败'});
+                    })
+            },
+            insertOrUpdate() {
+                if (this.addMode === 0) this.update();
+                else this.insert();
+            },
+            insert() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .post('/studentclass/insert', {
+                            student: this.selectTable.studentId,
+                            aclass: this.selectTable.className,
+                            position: this.selectTable.stuPosition
+                        }
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success', message: '添加关系成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '添加关系失败'});
+                        this.showAll();
+                    })
+            },
+            update() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .put('/studentclass/update', {
+                            student: this.selectTable.studentId,
+                            aclass: this.selectTable.className,
+                            position: this.selectTable.stuPosition
+                        }
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success', message: '更新关系成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '更新关系失败'});
+                        this.showAll();
+                    })
+            },
+            deletenb(name) {
+                this.$axios
+                    .post('/studentclass/delete', {student: name})
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success', message: '删除成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '删除失败'});
+                    })
+            }
         },
-        update() {
-            this.dialogFormVisible = false;
-            this.$axios
-                .put('/studentclass/update', {
-                    student: this.selectTable.studentId,
-                    aclass: this.selectTable.className,
-                    position: this.selectTable.stuPosition}
-                )
-                .then(successResponse => {
-                    //console.log(successResponse);
-                    this.$message({type: 'success',message: '更新关系成功'});
-                    this.selectAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '更新关系失败'});
-                    this.showAll();
-                })
-        },
-        deletenb(name) {
-            this.$axios
-                .post('/studentclass/delete', {student: name})
-                .then(successResponse => {
-                    //console.log(successResponse);
-                    this.$message({type: 'success',message: '删除成功'});
-                    this.selectAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '删除失败'});
-                })
-        }
-    },
-}
+    }
 </script>
 
 <style lang="less">

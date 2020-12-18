@@ -17,11 +17,11 @@
                         <el-menu-item index="otherStuDormClub">学生杂项管理</el-menu-item>
                         <el-menu-item index="otherStaffDormBuilding">职工杂项管理</el-menu-item>
                     </el-submenu>-->
-                    <el-submenu index="4">
+                    <!--el-submenu index="4">
                         <template slot="title"><i class="el-icon-star-on"></i>图表</template>
                         <el-menu-item index="libVisitor">不会做报表分析</el-menu-item>
-                        <!-- <el-menu-item index="newMember">用户数据</el-menu-item> -->
-                    </el-submenu>
+                        < <el-menu-item index="newMember">用户数据</el-menu-item>>
+                    </el-submenu-->
                 </el-menu>
             </el-col>
             <el-col :span="20" style="height: 100%;overflow: auto;">

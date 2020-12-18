@@ -1,5 +1,5 @@
 <template>
-    <div class="fillcontain">
+    <div class="borrow fillcontain">
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -231,7 +231,12 @@ export default {
 </script>
 
 <style lang="less">
+
     @import '../style/mixin';
+    .borrow{
+
+
+    }
     .demo-table-expand {
         font-size: 0;
     }

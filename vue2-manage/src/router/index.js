@@ -13,6 +13,7 @@ const libBookBorrow = r => require.ensure([], () => r(require('@/page/libBookBor
 const libAdminList = r => require.ensure([], () => r(require('@/page/libAdminList')), 'libAdminList');
 const libAddBook = r => require.ensure([], () => r(require('@/page/libAddBook')), 'libAddBook');
 const libVisitor = r => require.ensure([], () => r(require('@/page/libVisitor')), 'libVisitor');
+const libhome = r => require.ensure([], () => r(require('@/page/libhome')), 'libhome');
 
 const deptManage = r => require.ensure([], () => r(require('@/page/deptManage')), 'deptManage');
 const deptList = r => require.ensure([], () => r(require('@/page/deptList')), 'deptList');
@@ -27,6 +28,7 @@ const deptTeacherCourse = r => require.ensure([], () => r(require('@/page/deptTe
 const deptSex = r => require.ensure([], () => r(require('@/page/deptSex')), 'deptSex');
 const deptAge = r => require.ensure([], () => r(require('@/page/deptAge')), 'deptAge');
 const deptGrade = r => require.ensure([], () => r(require('@/page/deptGrade')), 'deptGrade');
+const depthome = r => require.ensure([], () => r(require('@/page/depthome')), 'depthome');
 
 const otherManage = r => require.ensure([], () => r(require('@/page/otherManage')), 'otherManage');
 const otherAssociation = r => require.ensure([], () => r(require('@/page/otherAssociation')), 'otherAssociation');
@@ -35,14 +37,22 @@ const otherDormitory = r => require.ensure([], () => r(require('@/page/otherDorm
 const otherStaff = r => require.ensure([], () => r(require('@/page/otherStaff')), 'otherStaff');
 const otherStuDormClub = r => require.ensure([], () => r(require('@/page/otherStuDormClub')), 'otherStuDormClub');
 const otherStaffDormBuilding = r => require.ensure([], () => r(require('@/page/otherStaffDormBuilding')), 'otherStaffDormBuilding');
+const otherhome = r => require.ensure([], () => r(require('@/page/otherhome')), 'otherhome');
+
 
 const superMan = r => require.ensure([], () => r(require('@/page/superMan')), 'superMan');
+const superManage = r => require.ensure([], () => r(require('@/page/superManage')), 'superManage');
 
 const studentView2 = r => require.ensure([], () => r(require('@/page/studentView')), 'studentView');
 const studentSelectCourse = r => require.ensure([], () => r(require('@/page/studentSelectCourse')), 'studentSelectCourse');
 const studentBorrowBook = r => require.ensure([], () => r(require('@/page/studentBorrowBook')), 'studentBorrowBook');
 const studentGrade = r => require.ensure([], () => r(require('@/page/studentGrade')), 'studentGrade');
+const studenthome = r => require.ensure([], () => r(require('@/page/studenthome')), 'studenthome');
+const studentClub = r => require.ensure([], () => r(require('@/page/studentClub')), 'studentClub');
+const studentRelation = r => require.ensure([], () => r(require('@/page/studentRelation')), 'studentRelation');
 
+const passWord =  r => require.ensure([], () => r(require('@/page/passWord')), 'passWord');
+const passManage =  r => require.ensure([], () => r(require('@/page/passManage')), 'passManage');
 
 const home = r => require.ensure([], () => r(require('@/page/home')), 'home');
 const addShop = r => require.ensure([], () => r(require('@/page/addShop')), 'addShop');
@@ -66,26 +76,182 @@ const routes = [
         component: login
     },
     {
+        path: '/passWord',
+        component: passWord,
+    },
+    {
+        path: '/passManage',
+        component: passManage,
+        name:'',
+        /*children: [{
+            path: '/passWord',
+            component: passWord,
+        },]*/
+    },
+    {
         path: '/studentView',
         component: studentView2,
         name: '',
         children: [{
+            path: '',
+            component: studenthome,
+        }, {
             path: '/studentGrade',
             component: studentGrade,
             meta: [],
         }, {
             path: '/studentSelectCourse',
             component: studentSelectCourse,
-            meta: ['添加数据', '添加商铺'],
         }, {
             path: '/studentBorrowBook',
             component: studentBorrowBook,
-        }]
+        }, {
+            path: '/studentClub',
+            component: studentClub,
+        }, {
+            path: '/studentRelation',
+            component: studentRelation,
+        }
+        ]
     },
     {
         path: '/superManage',
-        component: superMan
+        component: superManage,
+        name: '',
+        children: [{
+            path: '/superMan',
+            component: superMan,
+            name: '',
+        }]
     },
+
+    {
+        path: '/libraryManage',
+        component: libraryManage,
+        name: '',
+        children: [{
+            path: '',
+            component: libhome,
+            name: '',
+        }, {
+            path: '/libAddBook',
+            component: libAddBook,
+            meta: ['添加数据', '添加图书'],
+        }, {
+            path: '/libBook',
+            component: libBook,
+            meta: ['数据管理', '图书列表'],
+        }, {
+            path: '/libBookBorrow',
+            component: libBookBorrow,
+            meta: ['数据管理', '借阅信息'],
+        }, {
+            path: '/libAdminList',
+            component: libAdminList,
+            meta: ['数据管理', '管理员列表'],
+        }, {
+            path: '/libVisitor',
+            component: libVisitor,
+            meta: ['图表', '借阅书籍分布'],
+        }]
+    },
+    {
+        path: '/deptManage',
+        component: deptManage,
+        name: '',
+        children: [{
+            path: '',
+            component: depthome,
+            name: '',
+        }, {
+            path: '/deptList',
+            component: deptList,
+            meta: ['数据管理', '院系列表'],
+        }, {
+            path: '/deptTeacherList',
+            component: deptTeacherList,
+            meta: ['数据管理', '教师列表'],
+        }, {
+            path: '/deptClassList',
+            component: deptClassList,
+            meta: ['数据管理', '班级列表'],
+        }, {
+            path: '/deptStudentList',
+            component: deptStudentList,
+            meta: ['数据管理', '学生列表'],
+        }, {
+            path: '/deptClassroomList',
+            component: deptClassroomList,
+            meta: ['数据管理', '教室列表'],
+        }, {
+            path: '/deptCourseList',
+            component: deptCourseList,
+            meta: ['数据管理', '课程列表'],
+        }, , {
+            path: '/deptClassStudent',
+            component: deptClassStudent,
+            meta: ['关系管理', '班级-学生'],
+        }, {
+            path: '/deptStudentCourse',
+            component: deptStudentCourse,
+            meta: ['关系管理', '学生选课'],
+        }, , {
+            path: '/deptTeacherCourse',
+            component: deptTeacherCourse,
+            meta: ['关系管理', '教师授课'],
+        }, {
+            path: '/libVisitor',
+            component: libVisitor,
+            meta: ['图表', '借阅书籍分布'],
+        }, {
+            path: '/deptSex',
+            component: deptSex,
+            meta: ['图表', '性别分布'],
+        }, {
+            path: '/deptAge',
+            component: deptAge,
+            meta: ['图表', '年龄分布'],
+        }, {
+            path: '/deptGrade',
+            component: deptGrade,
+            meta: ['图表', '成绩分布'],
+        }]
+    },
+    {
+        path: '/otherManage',
+        component: otherManage,
+        name: '',
+        children: [{
+            path: '',
+            component: otherhome,
+            meta: [],
+        }, {
+            path: '/otherAssociation',
+            component: otherAssociation,
+
+        }, {
+            path: '/otherDormBuilding',
+            component: otherDormBuilding,
+
+        }, {
+            path: '/otherDormitory',
+            component: otherDormitory,
+
+        }, {
+            path: '/otherStaff',
+            component: otherStaff,
+
+        }, {
+            path: '/otherStaffDormBuilding',
+            component: otherStaffDormBuilding,
+
+        }, {
+            path: '/otherStuDormClub',
+            component: otherStuDormClub,
+
+        }]
+    },
+
     {
         path: '/manage',
         component: manage,
@@ -150,136 +316,6 @@ const routes = [
             path: '/explain',
             component: explain,
             meta: ['说明', '说明'],
-        }]
-    },
-    {
-        path: '/libraryManage',
-        component: libraryManage,
-        name: '',
-        children: [{
-            path: '/libAddBook',
-            component: libAddBook,
-            meta: ['添加数据', '添加图书'],
-        }, {
-            path: '/libBook',
-            component: libBook,
-            meta: ['数据管理', '图书列表'],
-        }, {
-            path: '/libBookBorrow',
-            component: libBookBorrow,
-            meta: ['数据管理', '借阅信息'],
-        }, {
-            path: '/libAdminList',
-            component: libAdminList,
-            meta: ['数据管理', '管理员列表'],
-        }, {
-            path: '/libVisitor',
-            component: libVisitor,
-            meta: ['图表', '借阅书籍分布'],
-        }]
-    },
-    {
-        path: '/deptManage',
-        component: deptManage,
-        name: '',
-        children: [{
-            path: '/deptList',
-            component: deptList,
-            meta: ['数据管理', '院系列表'],
-        }, {
-            path: '/deptTeacherList',
-            component: deptTeacherList,
-            meta: ['数据管理', '教师列表'],
-        }, {
-            path: '/deptClassList',
-            component: deptClassList,
-            meta: ['数据管理', '班级列表'],
-        }, {
-            path: '/deptStudentList',
-            component: deptStudentList,
-            meta: ['数据管理', '学生列表'],
-        }, {
-            path: '/deptClassroomList',
-            component: deptClassroomList,
-            meta: ['数据管理', '教室列表'],
-        }, {
-            path: '/deptCourseList',
-            component: deptCourseList,
-            meta: ['数据管理', '课程列表'],
-        }, , {
-            path: '/deptClassStudent',
-            component: deptClassStudent,
-            meta: ['关系管理', '班级-学生'],
-        }, {
-            path: '/deptStudentCourse',
-            component: deptStudentCourse,
-            meta: ['关系管理', '学生选课'],
-        }, , {
-            path: '/deptTeacherCourse',
-            component: deptTeacherCourse,
-            meta: ['关系管理', '教师授课'],
-        }, {
-            path: '/libVisitor',
-            component: libVisitor,
-            meta: ['图表', '借阅书籍分布'],
-        }, {
-            path: '/deptSex',
-            component: deptSex,
-            meta: ['图表', '借阅书籍分布'],
-        }, {
-            path: '/deptAge',
-            component: deptAge,
-            meta: ['图表', '借阅书籍分布'],
-        }, {
-            path: '/deptGrade',
-            component: deptGrade,
-            meta: ['图表', '借阅书籍分布'],
-        }]
-    },
-    {
-        path: '/otherManage',
-        component: otherManage,
-        name: '',
-        children: [{
-            path: '/otherAssociation',
-            component: otherAssociation,
-            meta: ['数据管理', '院系列表'],
-        }, {
-            path: '/otherDormBuilding',
-            component: otherDormBuilding,
-            meta: ['数据管理', '教师列表'],
-        }, {
-            path: '/otherDormitory',
-            component: otherDormitory,
-            meta: ['数据管理', '班级列表'],
-        }, {
-            path: '/otherStaff',
-            component: otherStaff,
-            meta: ['数据管理', '学生列表'],
-        }, {
-            path: '/otherStaffDormBuilding',
-            component: otherStaffDormBuilding,
-            meta: ['数据管理', '教室列表'],
-        }, {
-            path: '/otherStuDormClub',
-            component: otherStuDormClub,
-            meta: ['数据管理', '课程列表'],
-        }, , {
-            path: '/deptClassStudent',
-            component: deptClassStudent,
-            meta: ['关系管理', '班级-学生'],
-        }, {
-            path: '/deptStudentCourse',
-            component: deptStudentCourse,
-            meta: ['关系管理', '学生选课'],
-        }, , {
-            path: '/deptTeacherCourse',
-            component: deptTeacherCourse,
-            meta: ['关系管理', '教师授课'],
-        }, {
-            path: '/libVisitor',
-            component: libVisitor,
-            meta: ['图表', '借阅书籍分布'],
         }]
     },
 ]

@@ -1,5 +1,6 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
     <div>
+        <head-top></head-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"

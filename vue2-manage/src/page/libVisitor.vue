@@ -51,6 +51,9 @@
         methods: {
             async initData(){
                 try{
+                    this.newBorrow = 10;
+                    this.newReturn = 10;
+                    this.allBorrow = 100;
                     /*this.twDay = [1,2,3,4,5,6,7,8,9,10,11,12];
                     this.twDate = [
                         [1,2,3,4,5,6,7,8,9,10,11,12]
