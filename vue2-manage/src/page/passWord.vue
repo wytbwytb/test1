@@ -3,80 +3,71 @@
         <transition name="form-fade" mode="in-out">
             <section class="form_contianer" v-show="showLogin">
                 <div class="manage_tip">
-                    <p>数据库课设系统</p>
+                    <p class="tip">密码修改</p>
                 </div>
-                <el-form :model="loginForm" :rules="rules" ref="loginForm">
 
-                    <el-form-item label="身份信息" prop="identify" class="is-justify-center">
-                        <el-select v-model="loginForm.identify" placeholder="请选择身份信息" style="width:100%">
-                            <el-option label="超级管理员" value="superAdmin"></el-option>
-                            <el-option label="系管理员" value="deptAdmin"></el-option>
-                            <el-option label="图书馆管理员" value="libAdmin"></el-option>
-                            <el-option label="杂项管理员" value="otherAdmin"></el-option>
-                            <el-option label="教师" value="teacher"></el-option>
-                            <el-option label="学生" value="student"></el-option>
-                        </el-select>
+
+                <el-form :model="passData" :rules="rules" ref="loginForm" >
+                    <el-form-item label="旧密码" prop="oldpass">
+                        <el-input v-model="passData.oldpass"><span>dsfsf</span></el-input>
                     </el-form-item>
-                    <!--el-form-item prop="identify">
-                        <el-input v-model="loginForm.identify" placeholder="身份信息"><span>dsff</span></el-input>
-                    </el-form-item-->
-                    <el-form-item prop="username">
-                        <el-input v-model="loginForm.username" placeholder="用户名"><span>dsfsf</span></el-input>
+                    <el-form-item label="新密码" prop="newpass">
+                        <el-input v-model="passData.newpass"><span>dsfsf</span></el-input>
                     </el-form-item>
-                    <el-form-item prop="password">
-                        <el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
+                    <el-form-item label="确认密码" prop="newpass1">
+                        <el-input v-model="passData.newpass1"><span>dsfsf</span></el-input>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="submitForm('loginForm')" class="submit_btn">登陆</el-button>
+
+                    <el-form-item class="button_submit">
+                        <el-button type="primary" @click="submitForm('passData')" class="submit_btn">确认修改</el-button>
                     </el-form-item>
                 </el-form>
                 <p class="tip">温馨提示：</p>
-                <p class="tip">选择相应身份信息后使用统一认证账号登录</p>
+                <p class="tip">请记住您改的密码哟</p>
             </section>
         </transition>
     </div>
 </template>
 
 <script>
-    import {login, getAdminInfo} from '@/api/getData'
-    import {mapActions, mapState} from 'vuex'
+    import libHeadTop from "../components/libHeadTop";
+    import {cityGuess, addShop, searchplace, foodCategory} from '@/api/getData'
+    import {baseUrl, baseImgPath} from '@/config/env'
+    import {mapActions} from "vuex";
 
     export default {
         data() {
             return {
-                loginForm: {
-                    identify: '',
-                    username: '',
-                    password: '',
+                passData: {
+                    oldpass: '',
+                    newpass: '',
+                    newpass1: '',
                 },
                 rules: {
-                    identify: [
-                        {required: true, message: '请输入身份信息', trigger: 'blur'},
+                    oldpass: [
+                        {required: true, message: '请输入原密码', trigger: 'blur'},
                     ],
-                    username: [
-                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                    newpass: [
+                        {required: true, message: '请输入新密码', trigger: 'blur'}
                     ],
-                    password: [
-                        {required: true, message: '请输入密码', trigger: 'blur'}
+                    newpass1: [
+                        {required: true, message: '请再次输入新密码', trigger: 'blur'}
                     ],
                 },
-                showLogin: false,
+                showLogin: true,
             }
+        },
+        components: {
+            libHeadTop,
         },
         mounted() {
-            this.showLogin = true;
-            if (!this.adminInfo.id) {
-                this.getAdminData()
-            }
-        },
-
-        computed: {
-            ...mapState(['adminInfo']),
+            this.initData();
         },
         methods: {
             ...mapActions(['getAdminData']),
             async submitForm(formName) {
-                this.$refs[formName].validate(async (valid) => {
+                this.$router.push("/");
+                /*this.$refs[formName].validate(async (valid) => {
                     if (valid) {
                         const res = await login({
                             identify: this.loginForm.identify,
@@ -101,9 +92,7 @@
                             } else if (this.loginForm.identify == "superAdmin") {
                                 this.$router.push("superMan");
                             }
-                                /*else {
-                                    this.$router.push('manage')
-                                }*/
+
                         } else {
                             this.$message({
                                 type: 'error',
@@ -119,17 +108,7 @@
                         return false;
                     }
                 });
-            },
-        },
-        watch: {
-            adminInfo: function (newValue) {
-                /*if (newValue.id) {
-                    this.$message({
-                        type: 'success',
-                        message: '检测到您之前登录过，将自动登录'
-                    });
-                    //this.$router.push('manage')
-                }*/
+            },*/
             }
         }
     }
@@ -140,7 +119,11 @@
 
     .login_page {
 
-        background-image: url("../assets/img/fantasy.png");
+        background-image: url("../assets/img/沙河主楼日落.jpg");
+        width: 100%;
+        height: 100%;
+
+        background-size: 100% 100%;
         //background-color: #324057;
     }
 
@@ -152,7 +135,7 @@
 
         p {
             font-size: 34px;
-            color: #fff;
+            color: #2c4aff;
         }
     }
 

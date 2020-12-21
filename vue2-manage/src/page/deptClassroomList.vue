@@ -1,5 +1,7 @@
 <template>
+
     <div class="fillcontain">
+        <head-top></head-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -36,11 +38,13 @@
                     <template slot-scope="scope">
                         <el-button
                             size="small"
-                            @click="handleEdit(scope.row)">编辑</el-button>
+                            @click="handleEdit(scope.row)">编辑
+                        </el-button>
                         <el-button
                             size="small"
                             type="danger"
-                            @click="deletenb(scope.row.classRoomId)">删除</el-button>
+                            @click="deletenb(scope.row.classRoomId)">删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -54,8 +58,8 @@
                     :total="count">
                 </el-pagination>
             </div>
-            <div  style="text-align:center">
-                <el-button class="el-icon-plus"  @click="handleEdit(-1)">添加教室</el-button>
+            <div style="text-align:center">
+                <el-button class="el-icon-plus" @click="handleEdit(-1)">添加教室</el-button>
             </div>
             <el-dialog title="添加/修改教室信息" v-model="dialogFormVisible">
                 <el-form :model="selectTable">
@@ -82,170 +86,180 @@
 </template>
 
 <script>
-export default {
-    data(){
-        return {
-            keywords:'',
-            offset: 0,
-            limit: 10,
-            count: 0,
-            tableData: [],
-            allData: [],
-            currentPage: 1,
-            addMode: 0,
-            selectTable: {},
-            dialogFormVisible: false,
-        }
-    },
-    created(){
-        this.initData();
-    },
-    methods: {
-        async initData(){
-            try{
-                this.selectAll();
-            }catch(err){
-                console.log('获取数据失败', err);
+    import headTop from "../components/headTop";
+    export default {
+        data() {
+            return {
+                keywords: '',
+                offset: 0,
+                limit: 10,
+                count: 0,
+                tableData: [],
+                allData: [],
+                currentPage: 1,
+                addMode: 0,
+                selectTable: {},
+                dialogFormVisible: false,
             }
         },
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
+        components:{
+            headTop,
         },
-        handleCurrentChange(val) {
-            this.currentPage = val;
-            this.offset = (val - 1)*this.limit;
-            this.showAll()
+        created() {
+            this.initData();
         },
-        handleEdit(row) {
-            if(row === -1) {
-                this.addMode = 1;
-                this.selectTable={};
-            }
-            else {
-                this.addMode=0;
-                this.selectTable=row
-            }
-            this.dialogFormVisible = true;
-        },
-        showAll() {
-            this.tableData=[];
-            var i,len,l,r;
-            len=this.allData.length
-            this.count=len
-            l=(this.currentPage-1)*this.limit
-            r=l+this.limit
-            for(i=l;i<r&&i<len;i++)
-            {
-                this.tableData.push({
-                    classRoomId: this.allData[i].classroomId,
-                    classBelongName: this.allData[i].teachingBuilding,
-                    classFloor: this.allData[i].floors,
-                    classType: this.allData[i].type
-                })
-            }
-        },
-        searchClick(){
-            this.$axios
-                .post('/classroom/selectByClassroomId',{classroomId: "%"+this.keywords+"%"})
-                .then(successResponse => {
-                    this.allData=successResponse.data
-                    this.showAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '查询教室信息失败'});
-                })
-        },
-        selectAll () {
-            this.$axios
-                .get('/classroom/selectAll')
-                .then(successResponse => {
-                    this.allData=successResponse.data
-                    this.showAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '获取教室信息失败'});
-                })
-        },
-        insertOrUpdate() {
-            if(this.addMode===0) this.update();
-            else this.insert();
-        },
-        insert() {
-            this.dialogFormVisible = false;
-            this.$axios
-                .post('/classroom/insert', {
-                    classroomId: this.selectTable.classRoomId,
-                    teachingBuilding: this.selectTable.classBelongName,
-                    floors: this.selectTable.classFloor,
-                    type: this.selectTable.classType}
-                )
-                .then(successResponse => {
-                    //console.log(successResponse);
-                    this.$message({type: 'success',message: '添加教室信息成功'});
+        methods: {
+            async initData() {
+                try {
                     this.selectAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '添加教室信息失败'});
-                    this.showAll();
-                })
+                } catch (err) {
+                    console.log('获取数据失败', err);
+                }
+            },
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.offset = (val - 1) * this.limit;
+                this.showAll()
+            },
+            handleEdit(row) {
+                if (row === -1) {
+                    this.addMode = 1;
+                    this.selectTable = {};
+                } else {
+                    this.addMode = 0;
+                    this.selectTable = row
+                }
+                this.dialogFormVisible = true;
+            },
+            showAll() {
+                this.tableData = [];
+                var i, len, l, r;
+                len = this.allData.length
+                this.count = len
+                l = (this.currentPage - 1) * this.limit
+                r = l + this.limit
+                for (i = l; i < r && i < len; i++) {
+                    this.tableData.push({
+                        classRoomId: this.allData[i].classroomId,
+                        classBelongName: this.allData[i].teachingBuilding,
+                        classFloor: this.allData[i].floors,
+                        classType: this.allData[i].type
+                    })
+                }
+            },
+            searchClick() {
+                this.$axios
+                    .post('/classroom/selectByClassroomId', {classroomId: "%" + this.keywords + "%"})
+                    .then(successResponse => {
+                        this.allData = successResponse.data
+                        this.showAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '查询教室信息失败'});
+                    })
+            },
+            selectAll() {
+                this.$axios
+                    .get('/classroom/selectAll')
+                    .then(successResponse => {
+                        this.allData = successResponse.data
+                        this.showAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '获取教室信息失败'});
+                    })
+            },
+            insertOrUpdate() {
+                if (this.addMode === 0) this.update();
+                else this.insert();
+            },
+            insert() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .post('/classroom/insert', {
+                            classroomId: this.selectTable.classRoomId,
+                            teachingBuilding: this.selectTable.classBelongName,
+                            floors: this.selectTable.classFloor,
+                            type: this.selectTable.classType
+                        }
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success', message: '添加教室信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '添加教室信息失败'});
+                        this.showAll();
+                    })
+            },
+            update() {
+                this.dialogFormVisible = false;
+                this.$axios
+                    .put('/classroom/update', {
+                            classroomId: this.selectTable.classRoomId,
+                            teachingBuilding: this.selectTable.classBelongName,
+                            floors: this.selectTable.classFloor,
+                            type: this.selectTable.classType
+                        }
+                    )
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success', message: '更新教室信息成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '更新教室信息失败'});
+                        this.showAll();
+                    })
+            },
+            deletenb(name) {
+                this.$axios
+                    .post('/classroom/delete', {classroomId: name})
+                    .then(successResponse => {
+                        //console.log(successResponse);
+                        this.$message({type: 'success', message: '删除成功'});
+                        this.selectAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '删除失败'});
+                    })
+            }
         },
-        update() {
-            this.dialogFormVisible = false;
-            this.$axios
-                .put('/classroom/update', {
-                    classroomId: this.selectTable.classRoomId,
-                    teachingBuilding: this.selectTable.classBelongName,
-                    floors: this.selectTable.classFloor,
-                    type: this.selectTable.classType}
-                )
-                .then(successResponse => {
-                    //console.log(successResponse);
-                    this.$message({type: 'success',message: '更新教室信息成功'});
-                    this.selectAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '更新教室信息失败'});
-                    this.showAll();
-                })
-        },
-        deletenb(name) {
-            this.$axios
-                .post('/classroom/delete', {classroomId: name})
-                .then(successResponse => {
-                    //console.log(successResponse);
-                    this.$message({type: 'success',message: '删除成功'});
-                    this.selectAll();
-                })
-                .catch(failResponse => {
-                    this.$message({type: 'error',message: '删除失败'});
-                })
-        }
-    },
-}
+    }
 </script>
 
 <style lang="less">
     @import '../style/mixin';
+
     .demo-table-expand {
         font-size: 0;
     }
+
     .demo-table-expand label {
         width: 90px;
         color: #99a9bf;
     }
+
     .demo-table-expand .el-form-item {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
     }
-    .table_container{
+
+    .table_container {
         padding: 20px;
     }
-    .Pagination{
+
+    .Pagination {
         display: flex;
         justify-content: flex-start;
         margin-top: 8px;
     }
+
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -253,9 +267,11 @@ export default {
         position: relative;
         overflow: hidden;
     }
+
     .avatar-uploader .el-upload:hover {
         border-color: #20a0ff;
     }
+
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
@@ -264,6 +280,7 @@ export default {
         line-height: 120px;
         text-align: center;
     }
+
     .avatar {
         width: 120px;
         height: 120px;

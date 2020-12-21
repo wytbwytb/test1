@@ -1,5 +1,6 @@
 <template>
     <div class="fillcontain">
+        <head-top></head-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -86,6 +87,7 @@
 </template>
 
 <script>
+    import headTop from "../components/headTop";
     export default {
         data(){
             return {
@@ -100,6 +102,9 @@
                 selectTable: {},
                 dialogFormVisible: false,
             }
+        },
+        components:{
+          headTop,
         },
         created(){
             this.initData();

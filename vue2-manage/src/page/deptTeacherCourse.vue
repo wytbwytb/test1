@@ -1,6 +1,6 @@
 <template>
     <div class="fillcontain">
-
+        <head-top></head-top>
         <div class="table_container">
             <el-table
                 :data="tableData"
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+    import headTop from "../components/headTop";
 export default {
     data(){
         return {
@@ -89,6 +90,9 @@ export default {
             selectTable: {},
             dialogFormVisible: false,
         }
+    },
+    components:{
+        headTop,
     },
     created(){
         this.initData();
