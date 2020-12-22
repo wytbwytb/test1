@@ -1,5 +1,6 @@
 <template>
     <div class="fillcontain">
+        <super-top></super-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -88,7 +89,7 @@
 </template>
 
 <script>
-    import headTop from '../components/headTop'
+    import superTop from "../components/superTop";
     import {baseUrl, baseImgPath} from '@/config/env'
     import {getFoods, getFoodsCount, getMenu, updateFood, deleteFood, getResturantDetail, getMenuById} from '@/api/getData'
     export default {
@@ -131,7 +132,7 @@
             }
         },
         components: {
-            headTop,
+            superTop,
         },
         methods: {
             async initData(){

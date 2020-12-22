@@ -1,5 +1,6 @@
 <template>
     <div>
+        <stu-top></stu-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-    import headTop from '../components/headTop'
+    import stuTop from "../components/stuTop";
     import bookBorrowTendency from "../components/bookBorrowTendency"
     import visitorPie from '@/components/visitorPie'
     import stuRelationTen from "../components/stuRelationTen"
@@ -60,7 +61,7 @@
             }
         },
         components: {
-            headTop,
+            stuTop,
             stuRelationTen,
         },
         mounted(){

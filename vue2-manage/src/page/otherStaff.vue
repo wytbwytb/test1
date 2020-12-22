@@ -1,5 +1,6 @@
 <template>
     <div class="fillcontain">
+        <other-top></other-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -100,6 +101,7 @@
 </template>
 
 <script>
+    import otherTop from "../components/otherTop";
 export default {
     data(){
         return {
@@ -117,6 +119,9 @@ export default {
     },
     created(){
         this.initData();
+    },
+    components:{
+      otherTop,
     },
     methods: {
         async initData(){

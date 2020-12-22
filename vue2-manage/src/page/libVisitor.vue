@@ -1,5 +1,6 @@
 <template>
     <div>
+        <libHead-top></libHead-top>
         <!---top></head-top-->
         <!--tendency :sevenDate='twDate' :sevenDay='twDay'></tendency-->
         <section class="data_section">
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+    import libHeadTop from "../components/libHeadTop";
     import headTop from '../components/headTop'
     import bookBorrowTendency from "../components/bookBorrowTendency"
     import visitorPie from '@/components/visitorPie'
@@ -40,7 +42,7 @@
             }
         },
         components: {
-            headTop,
+            libHeadTop,
             visitorPie,
             bookBorrowTendency,
             tendency,

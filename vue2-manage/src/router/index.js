@@ -121,7 +121,7 @@ const routes = [
         children: [{
             path: '/superMan',
             component: superMan,
-            name: '',
+            meta: ['数据管理', '账号列表'],
         }]
     },
 
@@ -228,23 +228,24 @@ const routes = [
         }, {
             path: '/otherAssociation',
             component: otherAssociation,
+            meta: ['数据管理', '社团列表'],
 
         }, {
             path: '/otherDormBuilding',
             component: otherDormBuilding,
-
+            meta: ['数据管理', '公寓列表'],
         }, {
             path: '/otherDormitory',
             component: otherDormitory,
-
+            meta: ['数据管理', '寝室列表'],
         }, {
             path: '/otherStaff',
             component: otherStaff,
-
+            meta: ['数据管理', '职员列表'],
         }, {
             path: '/otherStaffDormBuilding',
             component: otherStaffDormBuilding,
-
+            //meta: ['数据管理', '列表'],
         }, {
             path: '/otherStuDormClub',
             component: otherStuDormClub,

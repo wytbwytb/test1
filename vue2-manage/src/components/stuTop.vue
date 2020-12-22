@@ -2,7 +2,7 @@
     <div class="libHeader_container">
 
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/libraryManage' }">图书管理</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/studentView' }">学生视图</el-breadcrumb-item>
             <el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index">{{item}}</el-breadcrumb-item>
         </el-breadcrumb>
         <el-dropdown @command="handleCommand" menu-align='start'>
@@ -39,7 +39,7 @@
             ...mapActions(['getAdminData']),
             async handleCommand(command) {
                 if (command == 'home') {
-                    this.$router.push('/libraryManage');
+                    this.$router.push('/studentView');
                 }else if(command=='passWord'){
                     this.$router.push('/passWord');
                 }else if(command == 'signout'){

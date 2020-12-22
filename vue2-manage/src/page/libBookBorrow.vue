@@ -1,5 +1,6 @@
 <template>
     <div class="borrow fillcontain">
+        <libHead-top></libHead-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -87,6 +88,7 @@
 </template>
 
 <script>
+    import libHeadTop from "../components/libHeadTop";
 export default {
     data(){
         return {
@@ -101,6 +103,9 @@ export default {
             selectTable: {},
             dialogFormVisible: false,
         }
+    },
+    components: {
+        libHeadTop,
     },
     created(){
         this.initData();

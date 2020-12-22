@@ -1,5 +1,6 @@
 <template>
     <div class="fillcontain">
+        <stu-top></stu-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -67,6 +68,7 @@
 </template>
 
 <script>
+    import stuTop from "../components/stuTop";
 export default {
     data(){
         return {
@@ -84,6 +86,9 @@ export default {
     },
     created(){
         this.initData();
+    },
+    components:{
+      stuTop,
     },
     methods: {
         async initData(){

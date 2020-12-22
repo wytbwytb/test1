@@ -1,14 +1,14 @@
 <template>
-    <div class="libHeader_container">
+    <div class="header_container">
 
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/libraryManage' }">图书管理</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/otherManage' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index">{{item}}</el-breadcrumb-item>
         </el-breadcrumb>
         <el-dropdown @command="handleCommand" menu-align='start'>
             <img :src="baseImgPath + adminInfo.avatar" class="avator">
             <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="home">home</el-dropdown-item>
+                <el-dropdown-item command="home">首页</el-dropdown-item>
                 <el-dropdown-item command="passWord">修改个人信息</el-dropdown-item>
                 <el-dropdown-item command="signout">退出</el-dropdown-item>
             </el-dropdown-menu>
@@ -39,10 +39,11 @@
             ...mapActions(['getAdminData']),
             async handleCommand(command) {
                 if (command == 'home') {
-                    this.$router.push('/libraryManage');
+                    this.$router.push('/otherManage');
                 }else if(command=='passWord'){
                     this.$router.push('/passWord');
-                }else if(command == 'signout'){
+                }
+                else if(command == 'signout'){
                     const res = await signout()
                     if (res.status == 1) {
                         this.$message({
@@ -64,7 +65,7 @@
 
 <style lang="less">
     @import '../style/mixin';
-    .libHeader_container{
+    .header_container{
         background-color: #EFF2F7;
         height: 60px;
         display: flex;

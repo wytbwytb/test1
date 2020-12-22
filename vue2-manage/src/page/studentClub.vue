@@ -1,5 +1,6 @@
 <template>
     <div class="fillcontain">
+        <stu-top></stu-top>
         <div style="margin-top: 10px;display: flex;justify-content: center;align-items: center">
             <el-input
                 @keyup.enter.native="searchClick"
@@ -56,6 +57,7 @@
 </template>
 
 <script>
+    import stuTop from "../components/stuTop";
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
     import {getFoods, getFoodsCount, getMenu, updateFood, deleteFood, getResturantDetail, getMenuById} from '@/api/getData'
@@ -99,7 +101,7 @@
             }
         },
         components: {
-            headTop,
+            stuTop,
         },
         methods: {
             async initData(){

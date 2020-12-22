@@ -3,6 +3,7 @@
         <!--div style="text-align: center">
             <p>GPA is  {{gpa}}    </p>
         </div-->
+        <stu-top></stu-top>
         <div class="data_list"><span class="data_num">GPA：{{gpa}}</span></div>
         <div class="table_container">
             <el-table
@@ -43,6 +44,7 @@
 </template>
 
 <script>
+    import stuTop from "../components/stuTop";
     import headTop from '../components/headTop'
     import {baseUrl, baseImgPath} from '@/config/env'
     import {
@@ -78,6 +80,7 @@
         created() {
             this.initData();
         },
+
         computed: {
             specs: function () {
                 let specs = [];
@@ -94,7 +97,7 @@
             }
         },
         components: {
-            headTop,
+            stuTop,
         },
         methods: {
             async initData() {
