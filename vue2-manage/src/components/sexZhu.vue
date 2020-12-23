@@ -14,14 +14,15 @@
     import 'echarts/lib/component/toolbox';
     import 'echarts/lib/component/markPoint';
     import 'echarts/lib/component/tooltip';
+
     export default {
-        mounted(){
+        mounted() {
             this.myChart = echarts.init(document.getElementById('sexZhu'));
             this.initData();
         },
         props: ['man', 'woman'],
         methods: {
-            initData(){
+            initData() {
                 const colors = ['#5793f3', '#675bba', '#d14a61'];
                 const option = {
                     //color: colors,
@@ -38,7 +39,7 @@
                     },
                     xAxis: {
                         type: 'category',
-                        data: ['大一', '大二', '大三', '大四']
+                        data: ['1系', '2系', '3系', '4系', '5系', '6系', '73系']
                     },
                     yAxis: {
                         type: 'value'
@@ -72,10 +73,10 @@
             }
         },
         watch: {
-            man: function (){
+            man: function () {
                 this.initData()
             },
-            woman: function (){
+            woman: function () {
                 this.initData()
             }
         }
@@ -84,7 +85,8 @@
 
 <style lang="less">
     @import '../style/mixin';
-    .sexZhu{
+
+    .sexZhu {
         display: flex;
         justify-content: center;
     }
