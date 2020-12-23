@@ -35,23 +35,11 @@
                     },
                     series : [
                         {
-                            name: '访问来源',
+                            name: '年龄',
                             type: 'pie',
                             radius : '55%',
                             center: ['50%', '60%'],
-                            data:this.pieData/*[
-                                {value:10, name:'18'},
-                                {value:50, name:'19'},
-                                {value:70, name:'20'},
-                                {value:60, name:'21'},
-                                {value:10, name:'22'},
-<<<<<<< HEAD
-=======
-                                /*{value:this.pieData.hangzhou, name:'杭州'},
-                                {value:this.pieData.qita, name:'其他'}
->>>>>>> 6e8efd7c30c9fb2416de9edb39992ee66a48b5cf
-
-                            ]*/,
+                            data:this.pieData,
                             itemStyle: {
                                 emphasis: {
                                     shadowBlur: 10,

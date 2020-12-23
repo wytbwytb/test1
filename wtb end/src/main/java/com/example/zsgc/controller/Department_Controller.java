@@ -35,7 +35,7 @@ public class Department_Controller {
         return department_mapper.queryDepartmentAge(department, age);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = {"/queryDepartmentAllAge"},method = RequestMethod.POST)
     public Query_age_cnt queryDepartmentAllAge(@RequestBody Department department) {
         int c18 = queryDepartmentAge(department,18);
         int c19 = queryDepartmentAge(department, 19);
@@ -50,7 +50,7 @@ public class Department_Controller {
         return department_mapper.queryDepartmentSex(department, sex);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = {"/queryAllDepartmentAge"}, method = RequestMethod.GET)
     public List<Query_age_cnt> queryAllDepartmentAge() {
         List<Query_age_cnt> list = new ArrayList<>();
         Department d1 = new Department("01","sb","sb");
@@ -78,14 +78,14 @@ public class Department_Controller {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = {"/queryDepartmentAllSex"}, method = RequestMethod.POST)
     public Query_sex_count queryDepartmentAllSex(@RequestBody Department department) {
         int boyCnt = queryDepartmentSex(department,"男");
         int girlCnt = queryDepartmentSex(department, "女");
         return new Query_sex_count(boyCnt,girlCnt);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = {"/queryAllDepartmentSex"}, method = RequestMethod.GET)
     public List<Query_sex_count> queryAllDepartmentSex() {
         List<Query_sex_count> list = new ArrayList<>();
         Department d1 = new Department("01","sb","sb");

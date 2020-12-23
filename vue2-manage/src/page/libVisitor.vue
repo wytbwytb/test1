@@ -58,8 +58,9 @@
                          var allData,i,len;
                          allData=successResponse.data
                          len=allData.length
-                         this.twDate=[[0,0,0,0,0,0,0,0,0,0,0,0],[0],[0]]
+                         this.twDate=[[0,0,0,0,0,0,0,0,0,0,0,0]]
                          this.allBorrow = len;
+                         this.newBorrow = len - 101;
                          for(i=0;i<len;i++)
                          {
                             if(allData[i].borrowDate=="1001") this.twDate[0][0]+=1;

@@ -1,6 +1,8 @@
 package com.example.zsgc.controller;
 
 import com.example.zsgc.entity.Course;
+import com.example.zsgc.entity.CourseT;
+import com.example.zsgc.entity.Student_Course;
 import com.example.zsgc.mapper.Course_Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +23,19 @@ public class Course_Controller {
         return course_mapper.selectAll();
     }
 
+    @RequestMapping(value = {"/selectAlll"}, method = RequestMethod.GET)
+    public List<CourseT> selectAlll() {
+        return course_mapper.selectAlll();
+    }
+
     @RequestMapping(value = {"/selectByIdOrName"}, method = RequestMethod.POST)
     public List<Course> selectByIdOrName(@RequestBody Course course) {
         return course_mapper.selectByIdOrName(course);
+    }
+
+    @RequestMapping(value = {"/selectByIdOrName2"}, method = RequestMethod.POST)
+    public List<CourseT> selectByIdOrName2(@RequestBody Course course) {
+        return course_mapper.selectByIdOrName2(course);
     }
 
     @RequestMapping(value = {"/selectByName"}, method = RequestMethod.POST)

@@ -5,6 +5,7 @@
             <el-breadcrumb-item :to="{ path: '/studentView' }">学生视图</el-breadcrumb-item>
             <el-breadcrumb-item v-for="(item, index) in $route.meta" :key="index">{{item}}</el-breadcrumb-item>
         </el-breadcrumb>
+        <p>Welcome,{{name}}!</p>
         <el-dropdown @command="handleCommand" menu-align='start'>
             <img :src="baseImgPath + adminInfo.avatar" class="avator">
             <el-dropdown-menu slot="dropdown">
@@ -20,11 +21,12 @@
     import {signout} from '@/api/getData'
     import {baseImgPath} from '@/config/env'
     import {mapActions, mapState} from 'vuex'
-
+    import common from '@/components/common';
     export default {
         data(){
             return {
                 baseImgPath,
+                name : common.userId
             }
         },
         created(){

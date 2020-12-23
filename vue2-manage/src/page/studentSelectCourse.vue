@@ -36,11 +36,15 @@
                     label="开课院系"
                     prop="courseDept">
                 </el-table-column>
+                <el-table-column
+                    label="教师"
+                    prop="teacher">
+                </el-table-column>
                 <el-table-column label="操作" width="160">
                     <template slot-scope="scope">
                         <el-button
                             size="small"
-                            @click="handleEdit(scope.row)">选课/退课
+                            @click="handleEdit(scope.row)">选课
                         </el-button>
                     </template>
                 </el-table-column>
@@ -109,7 +113,6 @@
         },
         methods: {
             async initData() {
-            common.userId="卧槽，牛逼没坏";
                 try {
                     this.selectAll();
                 } catch (err) {
@@ -125,14 +128,9 @@
                 this.showAll()
             },
             handleEdit(row) {
-                if (row === -1) {
-                    this.addMode = 1;
-                    this.selectTable = {};
-                } else {
-                    this.addMode = 0;
-                    this.selectTable = row
-                }
-                this.dialogFormVisible = true;
+                this.addMode=0;
+                this.selectTable=row;
+                this.insert();
             },
             showAll() {
                 this.tableData = [];
@@ -146,13 +144,14 @@
                         courseId: this.allData[i].courseId,
                         courseName: this.allData[i].name,
                         courseCredit: this.allData[i].credit,
-                        courseDept: this.allData[i].department
+                        courseDept: this.allData[i].department,
+                        teacher: this.allData[i].teacher,
                     })
                 }
             },
             searchClick() {
                 this.$axios
-                    .post('/course/selectByIdOrName', {
+                    .post('/course/selectByIdOrName2', {
                         courseId: "%" + this.keywords + "%",
                         name: "%" + this.keywords + "%"
                     })
@@ -166,7 +165,7 @@
             },
             selectAll() {
                 this.$axios
-                    .get('/course/selectAll')
+                    .get('/course/selectAlll')
                     .then(successResponse => {
                         this.allData = successResponse.data
                         this.showAll();
@@ -180,23 +179,20 @@
                 else this.insert();
             },
             insert() {
-                this.dialogFormVisible = false;
                 this.$axios
-                    .post('/course/insert', {
-                            courseId: this.selectTable.courseId,
-                            name: this.selectTable.courseName,
-                            credit: this.selectTable.courseCredit,
-                            department: this.selectTable.courseDept
-                        }
+                    .post('/studentcourse/insert', {
+                        student: common.userId,
+                        course: this.selectTable.courseId,
+                        teacher: this.selectTable.teacher}
                     )
                     .then(successResponse => {
-                        //console.log(successResponse);
-                        this.$message({type: 'success', message: '添加课程信息成功'});
-                        this.selectAll();
+                    //console.log(successResponse);
+                    this.$message({type: 'success',message: '选课成功'});
+                    this.selectAll();
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error', message: '添加课程信息失败'});
-                        this.showAll();
+                    this.$message({type: 'error',message: '选课失败'});
+                    this.showAll();
                     })
             },
             update() {

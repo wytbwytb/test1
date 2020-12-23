@@ -12,7 +12,7 @@ public interface Student_Course_Mapper {
     @Select("select * from student_course") //管理员查看权限
     public List<Student_Course> selectAll();
 
-    @Select("select * from student_course where 学号 = #{student}") //管理员查看权限
+    @Select("select 名称,课程号,教师编号,成绩 from student_course,course where student_course.学号 = #{student} and student_course.课程号 = course.课程编号") //管理员查看权限
     public List<Student_Course> selectByStudent(Student_Course student_course);
 
     @Select("select * from student_course where 课程号 = #{course}") //管理员查看权限

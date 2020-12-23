@@ -1,10 +1,7 @@
 <template>
     <div class="fillcontain">
-        <!--div style="text-align: center">
-            <p>GPA is  {{gpa}}    </p>
-        </div-->
         <stu-top></stu-top>
-        <div class="data_list"><span class="data_num">GPA：{{gpa}}</span></div>
+        <div class="data_list"><span class="data_num">平均分 ：{{avegrade}}</span></div>
         <div class="table_container">
             <el-table
                 :data="tableData"
@@ -45,200 +42,88 @@
 
 <script>
     import stuTop from "../components/stuTop";
-    import headTop from '../components/headTop'
-    import {baseUrl, baseImgPath} from '@/config/env'
-    import {
-        getFoods,
-        getFoodsCount,
-        getMenu,
-        updateFood,
-        deleteFood,
-        getResturantDetail,
-        getMenuById
-    } from '@/api/getData'
-
+    import common from '@/components/common';
     export default {
         data() {
             return {
-                baseUrl,
-                baseImgPath,
-                gpa: 0,
-                restaurant_id: null,
+                keywords: '',
                 offset: 0,
-                limit: 10,
+                limit: 20,
                 count: 0,
                 tableData: [],
+                allData: [],
                 currentPage: 1,
+                addMode: 0,
                 selectTable: {},
                 dialogFormVisible: false,
-                menuOptions: [],
-                selectMenu: {},
-                selectIndex: null,
-                expendRow: [],
+                avegrade : 0
             }
+        },
+        components:{
+            stuTop,
         },
         created() {
             this.initData();
         },
-
-        computed: {
-            specs: function () {
-                let specs = [];
-                if (this.selectTable.specfoods) {
-                    this.selectTable.specfoods.forEach(item => {
-                        specs.push({
-                            specs: item.specs_name,
-                            packing_fee: item.packing_fee,
-                            price: item.price,
-                        })
-                    })
-                }
-                return specs
-            }
-        },
-        components: {
-            stuTop,
-        },
         methods: {
             async initData() {
                 try {
-                    const countData = await getFoodsCount({restaurant_id: this.restaurant_id});
-                    if (countData.status == 1) {
-                        this.count = countData.count;
-                    } else {
-                        throw new Error('获取数据失败');
-                    }
-                    this.getFoods();
+                    this.selectAll();
                 } catch (err) {
                     console.log('获取数据失败', err);
                 }
             },
-            async getMenu() {
-                this.menuOptions = [];
-                try {
-                    const menu = await getMenu({restaurant_id: this.selectTable.restaurant_id, allMenu: true});
-                    menu.forEach((item, index) => {
-                        this.menuOptions.push({
-                            label: item.name,
-                            value: item.id,
-                            index,
-                        })
-                    })
-                } catch (err) {
-                    console.log('获取食品种类失败', err);
-                }
-            },
-            async getFoods() {
-                const Foods = await getFoods({
-                    offset: this.offset,
-                    limit: this.limit,
-                    restaurant_id: this.restaurant_id
-                });
-                this.tableData = [];
-                Foods.forEach((item, index) => {
-                    const tableData = {};
-                    tableData.name = item.name;
-                    tableData.item_id = item.item_id;
-                    tableData.description = item.description;
-                    tableData.rating = item.rating;
-                    tableData.month_sales = item.month_sales;
-                    tableData.restaurant_id = item.restaurant_id;
-                    tableData.category_id = item.category_id;
-                    tableData.image_path = item.image_path;
-                    tableData.specfoods = item.specfoods;
-                    tableData.index = index;
-                    this.tableData.push(tableData);
-                })
-            },
-            tableRowClassName(row, index) {
-                if (index === 1) {
-                    return 'info-row';
-                } else if (index === 3) {
-                    return 'positive-row';
-                }
-                return '';
-            },
-
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.offset = (val - 1) * this.limit;
-                this.getFoods()
+                this.showAll()
             },
-
             handleEdit(row) {
-                this.getSelectItemData(row, 'edit')
+                if (row === -1) {
+                    this.addMode = 1;
+                    this.selectTable = {};
+                } else {
+                    this.addMode = 0;
+                    this.selectTable = row
+                }
                 this.dialogFormVisible = true;
             },
-            async getSelectItemData(row, type) {
-                const restaurant = await getResturantDetail(row.restaurant_id);
-                const category = await getMenuById(row.category_id)
-                this.selectTable = {
-                    ...row, ...{
-                        restaurant_name: restaurant.name,
-                        restaurant_address: restaurant.address,
-                        category_name: category.name
-                    }
-                };
+            showAll() {
+                this.tableData = [];
+                var i, len, l, r, tg;
+                len = this.allData.length
+                this.count = len
+                l = (this.currentPage - 1) * this.limit
+                r = l + this.limit
+                tg=0;
+                for (i = 0; i < len; i++) {
+                    tg+=this.allData[i].grade
+                }
+                if(len>0) this.avegrade=(tg/len).toFixed(2);
+                for (i = l; i < r && i < len; i++) {
+                    this.tableData.push({
+                        courseId: this.allData[i].course,
+                        courseName: this.allData[i].student,
+                        teacherId: this.allData[i].teacher,
+                        grade: this.allData[i].grade
+                    })
+                }
 
-                this.selectMenu = {label: category.name, value: row.category_id}
-                this.tableData.splice(row.index, 1, {...this.selectTable});
-                this.$nextTick(() => {
-                    this.expendRow.push(row.index);
-                })
-                if (type == 'edit' && this.restaurant_id != row.restaurant_id) {
-                    this.getMenu();
-                }
             },
-            handleSelect(index) {
-                this.selectIndex = index;
-                this.selectMenu = this.menuOptions[index];
-            },
-            async handleDelete(index, row) {
-                try {
-                    const res = await deleteFood(row.item_id);
-                    if (res.status == 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '删除食品成功'
-                        });
-                        this.tableData.splice(index, 1);
-                    } else {
-                        throw new Error(res.message)
-                    }
-                } catch (err) {
-                    this.$message({
-                        type: 'error',
-                        message: err.message
-                    });
-                    console.log('删除食品失败')
-                }
-            },
-
-            async updateFood() {
-                this.dialogFormVisible = false;
-                try {
-                    const subData = {new_category_id: this.selectMenu.value, specs: this.specs};
-                    const postData = {...this.selectTable, ...subData};
-                    const res = await updateFood(postData)
-                    if (res.status == 1) {
-                        this.$message({
-                            type: 'success',
-                            message: '更新食品信息成功'
-                        });
-                        this.getFoods();
-                    } else {
-                        this.$message({
-                            type: 'error',
-                            message: res.message
-                        });
-                    }
-                } catch (err) {
-                    console.log('更新餐馆信息失败', err);
-                }
-            },
+            selectAll() {
+                this.$axios
+                    .post('/studentcourse/selectByStudent',{student: common.userId})
+                    .then(successResponse => {
+                        this.allData = successResponse.data
+                        this.showAll();
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '获取成绩失败'});
+                    })
+            }
         },
     }
 </script>

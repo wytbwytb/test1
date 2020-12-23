@@ -26,14 +26,14 @@
                 const option = {
                     color: colors,
                     title: {
-                        text: '图书借阅月份走势图',
+                        text: '图书借阅走势图',
                         subtext: ''
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     legend: {
-                        data:['借书次数', '低年级学生借阅次数', '高年级学生借阅次数']
+                        data:['借书次数']
                     },
                     toolbox: {
                         show: true,
@@ -56,7 +56,7 @@
                             type: 'value',
                             name: '次数',
                             min: 0,
-                            max: 20,
+                            max: 10,
                             position: 'left',
                             axisLine: {
                                 lineStyle: {

@@ -111,7 +111,7 @@ export default {
         handleEdit(row) {
             this.addMode=0;
             this.selectTable=row;
-            this.update();
+            this.insert();
         },
         showAll() {
             this.tableData=[];
@@ -160,25 +160,30 @@ export default {
             else this.insert();
         },
         insert() {
+            if(this.selectTable.bookStatus=="不可借阅")
+            {
+                this.$message({type: 'error',message: '该书已被借出'});
+            }
+            else
+            {
             this.dialogFormVisible = false;
             this.$axios
-                .post('/book/insert', {
-                    bookId: this.selectTable.bookId,
-                    name: this.selectTable.bookName,
-                    author: this.selectTable.bookWriter,
-                    publisher: this.selectTable.bookPublisher,
-                    publishDate: this.selectTable.bookPublishYear,
-                    state: this.selectTable.bookStatus}
+                .post('/studentbook/insert', {
+                    student: common.userId,
+                    book: this.selectTable.bookId,
+                    borrowDate: "1224",
+                    state: "未归还"}
                 )
                 .then(successResponse => {
-                    //console.log(successResponse);
-                    this.$message({type: 'success',message: '添加课程信息成功'});
-                    this.selectAll();
+                //console.log(successResponse);
+                this.$message({type: 'success',message: '借阅成功'});
+                this.selectAll();
                 })
                 .catch(failResponse => {
-                    this.$message({type: 'error',message: '添加课程信息失败'});
-                    this.showAll();
+                this.$message({type: 'error',message: '借阅失败'});
+                this.showAll();
                 })
+            }
         },
         update() {
             if(this.selectTable.bookStatus=="不可借阅")

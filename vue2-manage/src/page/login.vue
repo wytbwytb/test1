@@ -38,7 +38,7 @@
 </template>
 
 <script>
-
+    import common from '@/components/common';
 export default {
     data() {
         return {
@@ -79,7 +79,26 @@ export default {
                     this.$message({type: 'error', message: '用户名或密码错误'})
                     else
                     {
+                        var ok;
+                        ok=1;
                         if(successResponse.data[0].type=="超级管理员")
+                            common.userId = successResponse.data[0].id;
+                        else if(successResponse.data[0].type=="系管理员"&&this.loginForm.identify=="deptAdmin")
+                            common.userId = successResponse.data[0].id;
+                        else if(successResponse.data[0].type=="图书管理员"&&this.loginForm.identify=="libAdmin")
+                            common.userId = successResponse.data[0].id;
+                        else if(successResponse.data[0].type=="其他管理员"&&this.loginForm.identify=="otherAdmin")
+                            common.userId = successResponse.data[0].id;
+                        else if(successResponse.data[0].type=="老师"&&this.loginForm.identify=="teacher")
+                            common.userId = successResponse.data[0].id;
+                        else if(successResponse.data[0].type=="学生"&&this.loginForm.identify=="student")
+                            common.userId = successResponse.data[0].id;
+                        else
+                        {
+                            this.$message({type: 'error', message: '身份不一致'});
+                            ok=0;
+                        }
+                        if(ok)
                         {
                             if(this.loginForm.identify=="superAdmin") this.$router.push('/superManage');
                             else if(this.loginForm.identify=="deptAdmin") this.$router.push('/deptManage');
@@ -88,18 +107,6 @@ export default {
                             else if(this.loginForm.identify=="teacher") this.$router.push('/deptManage');
                             else if(this.loginForm.identify=="student") this.$router.push('/studentView');
                         }
-                        else if(successResponse.data[0].type=="系管理员"&&this.loginForm.identify=="deptAdmin")
-                            this.$router.push('/deptManage');
-                        else if(successResponse.data[0].type=="图书管理员"&&this.loginForm.identify=="libAdmin")
-                            this.$router.push('/libraryManage');
-                        else if(successResponse.data[0].type=="其他管理员"&&this.loginForm.identify=="otherAdmin")
-                            this.$router.push('/otherManage');
-                        else if(successResponse.data[0].type=="老师"&&this.loginForm.identify=="teacher")
-                            this.$router.push('/deptManage');
-                        else if(successResponse.data[0].type=="学生"&&this.loginForm.identify=="student")
-                            this.$router.push('/studentView');
-                        else
-                            this.$message({type: 'error', message: '身份不一致'});
                     }
                 })
                 .catch(failResponse => {

@@ -35,7 +35,7 @@
                     },
                     series : [
                         {
-                            name: '访问来源',
+                            name: '性别',
                             type: 'pie',
                             radius : '55%',
                             center: ['50%', '60%'],

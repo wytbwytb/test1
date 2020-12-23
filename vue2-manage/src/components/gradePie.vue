@@ -42,16 +42,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '60%'],
-                            data:this.pieData/*[
-                                {value:10, name:'<60'},
-                                {value:50, name:'60-70'},
-                                {value:70, name:'70-80'},
-                                {value:60, name:'80-90'},
-                                {value:10, name:'>=90'},
-                                /*{value:this.pieData.hangzhou, name:'杭州'},
-                                {value:this.pieData.qita, name:'其他'}
-
-                            ]*/,
+                            data:this.pieData,
                             itemStyle: {
                                 emphasis: {
                                     shadowBlur: 10,

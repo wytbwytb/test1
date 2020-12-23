@@ -1,5 +1,5 @@
 <script>
-  const userId = "卧槽，牛逼坏了";
+  const userId = "";
   export default {
        userId,
  }
