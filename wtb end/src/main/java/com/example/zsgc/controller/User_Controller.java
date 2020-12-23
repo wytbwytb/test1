@@ -21,12 +21,17 @@ public class User_Controller {
         return user_mapper.selectAll();
     }
 
-    @RequestMapping(value = {"/selectByUserName"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/selectByUserName"}, method = RequestMethod.POST)
     public List<User> selectByUserName(@RequestBody User user) {
         return user_mapper.selectByUserName(user);
     }
 
-    @RequestMapping(value = {"/selectByType"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/loginCheck"}, method = RequestMethod.POST)
+    public List<User> loginCheck(@RequestBody User user) {
+        return user_mapper.loginCheck(user);
+    }
+
+    @RequestMapping(value = {"/selectByType"}, method = RequestMethod.POST)
     public List<User> selectByType(@RequestBody User user) {
         return user_mapper.selectByType(user);
     }

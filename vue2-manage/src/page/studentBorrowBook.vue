@@ -69,6 +69,7 @@
 
 <script>
     import stuTop from "../components/stuTop";
+    import common from '@/components/common';
 export default {
     data(){
         return {
@@ -92,6 +93,7 @@ export default {
     },
     methods: {
         async initData(){
+            console.log(common.userId);
             try{
                 this.selectAll();
             }catch(err){
@@ -107,15 +109,9 @@ export default {
             this.showAll()
         },
         handleEdit(row) {
-            if(row === -1) {
-                this.addMode = 1;
-                this.selectTable={};
-            }
-            else {
-                this.addMode=0;
-                this.selectTable=row
-            }
-            this.dialogFormVisible = true;
+            this.addMode=0;
+            this.selectTable=row;
+            this.update();
         },
         showAll() {
             this.tableData=[];
@@ -185,7 +181,12 @@ export default {
                 })
         },
         update() {
-            this.dialogFormVisible = false;
+            if(this.selectTable.bookStatus=="不可借阅")
+            {
+                this.$message({type: 'error',message: '该书已被借出'});
+            }
+            else
+            {
             this.$axios
                 .put('/book/update', {
                     bookId: this.selectTable.bookId,
@@ -193,17 +194,18 @@ export default {
                     author: this.selectTable.bookWriter,
                     publisher: this.selectTable.bookPublisher,
                     publishDate: this.selectTable.bookPublishYear,
-                    state: this.selectTable.bookStatus}
+                    state: "不可借阅"}
                 )
                 .then(successResponse => {
                     //console.log(successResponse);
-                    this.$message({type: 'success',message: '更新课程信息成功'});
+                    this.$message({type: 'success',message: '借阅成功'});
                     this.selectAll();
                 })
                 .catch(failResponse => {
-                    this.$message({type: 'error',message: '更新课程信息失败'});
+                    this.$message({type: 'error',message: '更新借阅信息失败'});
                     this.showAll();
                 })
+            }
         },
         deletenb(name) {
             this.$axios

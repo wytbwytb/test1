@@ -68,11 +68,43 @@
             },
             async initData() {
 
+                this.$axios
+                    .get('/student/selectAll')
+                    .then(successResponse => {
+                        var i,len,a18,a19,a20,a21,a22;
+                        len=successResponse.data.length
+                        a18=0;
+                        a19=0;
+                        a20=0;
+                        a21=0;
+                        a22=0;
+                        for(i=0;i<len;i++)
+                        {
+                            if(successResponse.data[i].age==18) a18+=1;
+                            else if(successResponse.data[i].age==19) a19+=1;
+                            else if(successResponse.data[i].age==20) a20+=1;
+                            else if(successResponse.data[i].age==21) a21+=1;
+                            else if(successResponse.data[i].age==22) a22+=1;
+                        }
+                        this.pieData = [
+                            {value: a18, name: '18'},
+                            {value: a19, name: '19'},
+                            {value: a20, name: '20'},
+                            {value: a21, name: '21'},
+                            {value: a22, name: '22'},
+                        ];
+                        console.log(this.pieData)
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '获取学生信息失败'});
+                        console.log(failResponse);
+                    })
+
                 /*this.pieData2 = [
                     {value: 1000, name: 'wtbnb'},
                     {value: 300, name: 'xysnb'},
                     {value: 300, name: 'yshnb'}
-                ]*/
+                ]
                 try {
                     this.pieData = [
                         {value: 1000, name: 'wtbnb'},
@@ -86,7 +118,7 @@
                     this.age22 = [60, 10, 50, 90];
                 } catch (err) {
                     console.log('获取用户分布信息失败', err);
-                }
+                }*/
             },
         }
     }

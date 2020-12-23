@@ -52,24 +52,45 @@
         },
         methods: {
             async initData(){
-                try{
-                    this.newBorrow = 10;
-                    this.newReturn = 10;
-                    this.allBorrow = 100;
-                    /*this.twDay = [1,2,3,4,5,6,7,8,9,10,11,12];
-                    this.twDate = [
-                        [1,2,3,4,5,6,7,8,9,10,11,12]
-                        ,[1,2,3,4,5,6,7,8,9,10,11,12]
-                        ,[1,2,3,4,5,6,7,8,9,10,11,12]];*/
-                    /*const res = await getUserCity();
-                    if (res.status == 1) {
-                        this.pieData = res.user_city;
-                    }else{
-                        throw new Error(res)
-                    }*/
-                }catch(err){
-                    console.log('获取用户分布信息失败',err);
-                }
+                this.$axios
+                     .get('/studentbook/selectAll')
+                     .then(successResponse => {
+                         var allData,i,len;
+                         allData=successResponse.data
+                         len=allData.length
+                         this.twDate=[[0,0,0,0,0,0,0,0,0,0,0,0],[0],[0]]
+                         this.allBorrow = len;
+                         for(i=0;i<len;i++)
+                         {
+                            if(allData[i].borrowDate=="1001") this.twDate[0][0]+=1;
+                            else if(allData[i].borrowDate=="1002") this.twDate[0][1]+=1;
+                            else if(allData[i].borrowDate=="1003") this.twDate[0][2]+=1;
+                            else if(allData[i].borrowDate=="1004") this.twDate[0][3]+=1;
+                            else if(allData[i].borrowDate=="1005") this.twDate[0][4]+=1;
+                            else if(allData[i].borrowDate=="1006") this.twDate[0][5]+=1;
+                            else if(allData[i].borrowDate=="1007") this.twDate[0][6]+=1;
+                            else if(allData[i].borrowDate=="1008") this.twDate[0][7]+=1;
+                            else if(allData[i].borrowDate=="1009") this.twDate[0][8]+=1;
+                            else if(allData[i].borrowDate=="1010") this.twDate[0][9]+=1;
+                            else if(allData[i].borrowDate=="1011") this.twDate[0][10]+=1;
+                            else if(allData[i].borrowDate=="1012") this.twDate[0][11]+=1;
+                         }
+                     })
+                     .catch(failResponse => {
+                         this.$message({type: 'error',message: '获取借阅信息失败'});
+                     })
+                this.newBorrow = 0;
+                this.newReturn = 0;
+                /*this.twDate = [
+                    [1,2,3,4,5,6,7,8,9,10,11,12]
+                    ,[1,2,3,4,5,6,7,8,9,10,11,12]
+                    ,[1,2,3,4,5,6,7,8,9,10,11,12]];*/
+                /*const res = await getUserCity();
+                if (res.status == 1) {
+                    this.pieData = res.user_city;
+                }else{
+                    throw new Error(res)
+                }*/
             },
         }
     }
