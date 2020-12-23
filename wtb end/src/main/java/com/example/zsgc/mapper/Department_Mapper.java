@@ -2,6 +2,7 @@ package com.example.zsgc.mapper;
 
 import com.example.zsgc.entity.Department;
 import com.example.zsgc.entity.Query_sex_count;
+import com.example.zsgc.entity.TestThing;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
@@ -27,6 +28,13 @@ public interface Department_Mapper {
             "           and Student_Class.学生编号 = Student.学号 and Student.性别 = #{sex}\n" +
             "       )as ss")
     public int queryDepartmentSex(Department department, String sex);
+
+    @Select("select count(*) from (\n" +
+            "       select Student_Class.学生编号 from Student_Class, Class, Student\n" +
+            "           where Student_Class.班级 = Class.班级编号 and Class.系编号 = #{departmentId}\n" +
+            "           and Student_Class.学生编号 = Student.学号 and Student.年龄 = #{age}\n" +
+            "       )as ss")
+    public int  queryDepartmentAge(Department department, int age);
 
     @Insert("insert into department values (#{departmentId},#{name},#{header})")
     public void insertDepartment(Department department);
