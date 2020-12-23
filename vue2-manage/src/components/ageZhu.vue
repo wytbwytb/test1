@@ -23,10 +23,8 @@
         props: ['age18', 'age19', 'age20', 'age21', 'age22'],
         methods: {
             initData() {
-                //const colors = ['#f36fd1', '#56bab4', '#d14a61','#208ad1','#ccd160'];
-                //const colors = rgba(0, 0, 0, 0.5);
+
                 const option = {
-                    //color: colors,
                     itemStyle: {
                         emphasis: {
                             shadowBlur: 10,

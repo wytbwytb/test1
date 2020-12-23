@@ -10,44 +10,38 @@
     import 'echarts/lib/chart/pie';
     import 'echarts/lib/component/title';
     import 'echarts/lib/component/legend';
+
     export default {
-        mounted(){
+        mounted() {
             this.myChart = echarts.init(document.getElementById('gradePie'));
             this.initData();
         },
         props: ['pieData'],
         methods: {
-            initData(){
+            initData() {
                 const option = {
-                    title : {
+                    title: {
                         text: '分数分布',
                         subtext: '',
-                        x:'center'
+                        x: 'center'
                     },
-                    tooltip : {
+                    tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['<60','60~70','70~80','80~90','>=90']
+                        data: ['<60', '60~70', '70~80', '80~90', '>=90']
                     },
-                    series : [
+                    series: [
                         {
                             name: '分数',
                             type: 'pie',
-                            radius : '55%',
+                            radius: '55%',
                             center: ['50%', '60%'],
-                            data:[
-                                {value:10, name:'<60'},
-                                {value:50, name:'60~70'},
-                                {value:70, name:'70~80'},
-                                {value:60, name:'80~90'},
-                                {value:10, name:'>=90'},
-                                /*{value:this.pieData.hangzhou, name:'杭州'},
-                                {value:this.pieData.qita, name:'其他'}*/
-
+                            data: [
+                                this.pieData
                             ],
                             itemStyle: {
                                 emphasis: {
@@ -64,7 +58,7 @@
             }
         },
         watch: {
-            pieData: function (){
+            pieData: function () {
                 this.initData()
             }
         }
@@ -73,7 +67,8 @@
 
 <style lang="less">
     @import '../style/mixin';
-    .gradePie{
+
+    .gradePie {
         display: flex;
         justify-content: center;
         margin-top: 20px;

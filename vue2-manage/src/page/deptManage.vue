@@ -21,7 +21,6 @@
                     </el-submenu>
                     <el-submenu index="4">
                         <template slot="title"><i class="el-icon-star-on"></i>图表</template>
-                        <!--el-menu-item index="libVisitor">不会做报表分析</el-menu-item-->
                         <el-menu-item index="deptSex">性别占比</el-menu-item>
                         <el-menu-item index="deptAge">年龄占比</el-menu-item>
                         <el-menu-item index="deptGrade">成绩分布</el-menu-item>
