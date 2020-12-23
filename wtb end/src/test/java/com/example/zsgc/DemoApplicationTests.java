@@ -6,10 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class DemoApplicationTests {
-    private Association_Controller controller;
-    @Test
-    void test() {
-        controller.selectAll();
-    }
+//    private Association_Controller controller;
+//    @Test
+//    void test() {
+//        controller.selectAll();
+//    }
 
 }
