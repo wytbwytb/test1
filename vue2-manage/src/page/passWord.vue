@@ -7,15 +7,15 @@
                 </div>
 
 
-                <el-form :model="passData" :rules="rules" ref="loginForm" >
+                <el-form :model="passData" :rules="rules" ref="loginForm">
                     <el-form-item label="旧密码" prop="oldpass">
                         <el-input v-model="passData.oldpass"><span>dsfsf</span></el-input>
                     </el-form-item>
                     <el-form-item label="新密码" prop="newpass">
-                        <el-input v-model="passData.newpass"><span>dsfsf</span></el-input>
+                        <el-input type="password" v-model="passData.newpass"><span>dsfsf</span></el-input>
                     </el-form-item>
                     <el-form-item label="确认密码" prop="newpass1">
-                        <el-input v-model="passData.newpass1"><span>dsfsf</span></el-input>
+                        <el-input type="password" v-model="passData.newpass1"><span>dsfsf</span></el-input>
                     </el-form-item>
 
                     <el-form-item class="button_submit">
