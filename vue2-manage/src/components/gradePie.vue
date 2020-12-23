@@ -10,34 +10,37 @@
     import 'echarts/lib/chart/pie';
     import 'echarts/lib/component/title';
     import 'echarts/lib/component/legend';
+
     export default {
-        mounted(){
+        mounted() {
             this.myChart = echarts.init(document.getElementById('gradePie'));
             this.initData();
         },
         props: ['pieData'],
         methods: {
-            initData(){
+            initData() {
                 const option = {
-                    title : {
+                    title: {
                         text: '分数分布',
                         subtext: '',
-                        x:'center'
+                        x: 'center'
                     },
-                    tooltip : {
+                    tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     legend: {
                         orient: 'vertical',
                         left: 'left',
+
                         data: ["<60","60-69","70-79","80-89",">=90"]
+
                     },
-                    series : [
+                    series: [
                         {
                             name: '成绩',
                             type: 'pie',
-                            radius : '55%',
+                            radius: '55%',
                             center: ['50%', '60%'],
                             data:this.pieData/*[
                                 {value:10, name:'<60'},
@@ -64,7 +67,7 @@
             }
         },
         watch: {
-            pieData: function (){
+            pieData: function () {
                 this.initData()
             }
         }
@@ -73,7 +76,8 @@
 
 <style lang="less">
     @import '../style/mixin';
-    .gradePie{
+
+    .gradePie {
         display: flex;
         justify-content: center;
         margin-top: 20px;

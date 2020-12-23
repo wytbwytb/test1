@@ -23,10 +23,8 @@
         props: ['age18', 'age19', 'age20', 'age21', 'age22'],
         methods: {
             initData() {
-                //const colors = ['#f36fd1', '#56bab4', '#d14a61','#208ad1','#ccd160'];
-                //const colors = rgba(0, 0, 0, 0.5);
+
                 const option = {
-                    //color: colors,
                     itemStyle: {
                         emphasis: {
                             shadowBlur: 10,
@@ -40,7 +38,7 @@
                     },
                     xAxis: {
                         type: 'category',
-                        data: ['大一', '大二', '大三', '大四']
+                        data: ['1系', '2系', '3系', '4系', '5系', '6系', '73系']
                     },
                     yAxis: {
                         type: 'value'
@@ -61,31 +59,31 @@
                             name: '18',
                             data: [this.age18[0], 50, 60, 70],
                             type: 'bar',
-                            barWidth: 30,
+                            barWidth: 15,
                         },
                         {
                             name: '19',
                             data: [10, 20, 30, 40],
                             type: 'bar',
-                            barWidth: 30,
+                            barWidth: 15,
                         },
                         {
                             name: '20',
                             data: [120, 200, 150, 80],
                             type: 'bar',
-                            barWidth: 30,
+                            barWidth: 15,
                         },
                         {
                             name: '21',
                             data: [120, 200, 150, 80],
                             type: 'bar',
-                            barWidth: 30,
+                            barWidth: 15,
                         },
                         {
                             name: '22',
                             data: [33, 40, 5, 10],
                             type: 'bar',
-                            barWidth: 30,
+                            barWidth: 15,
                         }]
                 };
                 this.myChart.setOption(option);

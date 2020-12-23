@@ -45,8 +45,11 @@
                                 {value:70, name:'20'},
                                 {value:60, name:'21'},
                                 {value:10, name:'22'},
+<<<<<<< HEAD
+=======
                                 /*{value:this.pieData.hangzhou, name:'杭州'},
                                 {value:this.pieData.qita, name:'其他'}
+>>>>>>> 6e8efd7c30c9fb2416de9edb39992ee66a48b5cf
 
                             ]*/,
                             itemStyle: {
