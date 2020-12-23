@@ -181,7 +181,7 @@
                         this.showAll();
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error', message: '查询课程信息失败'});
+                        this.$message({type: 'error', message: '查询图书信息失败'});
                     })
             },
             selectAll() {
@@ -192,7 +192,7 @@
                         this.showAll();
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error', message: '获取课程信息失败'});
+                        this.$message({type: 'error', message: '获取图书信息失败'});
                     })
             },
             insertOrUpdate() {
@@ -213,11 +213,11 @@
                     )
                     .then(successResponse => {
                         //console.log(successResponse);
-                        this.$message({type: 'success', message: '添加课程信息成功'});
+                        this.$message({type: 'success', message: '添加图书信息成功'});
                         this.selectAll();
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error', message: '添加课程信息失败'});
+                        this.$message({type: 'error', message: '添加图书信息失败'});
                         this.showAll();
                     })
             },
@@ -235,11 +235,11 @@
                     )
                     .then(successResponse => {
                         //console.log(successResponse);
-                        this.$message({type: 'success', message: '更新课程信息成功'});
+                        this.$message({type: 'success', message: '更新图书信息成功'});
                         this.selectAll();
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error', message: '更新课程信息失败'});
+                        this.$message({type: 'error', message: '更新图书信息失败'});
                         this.showAll();
                     })
             },

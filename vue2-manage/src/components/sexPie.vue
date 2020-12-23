@@ -31,7 +31,7 @@
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['yshnb','wtbnb','xysnb']
+                        data: ['女','男']
                     },
                     series : [
                         {
@@ -40,11 +40,8 @@
                             radius : '55%',
                             center: ['50%', '60%'],
                             data:[
-                                {value:1000, name:'yshnb'},
-                                {value:1000, name:'wtbnb'},
-                                {value:10, name:'xysnb'}
-                                /*{value:this.pieData.hangzhou, name:'杭州'},
-                                {value:this.pieData.qita, name:'其他'}*/
+                                {value:this.pieData[0].value, name:this.pieData[0].name},
+                                {value:this.pieData[1].value, name:this.pieData[1].name}
 
                             ],
                             itemStyle: {

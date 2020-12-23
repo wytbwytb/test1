@@ -62,7 +62,7 @@ public class Student_Controller {
         return student_mapper.queryAssociation(student);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = {"/querySpecialMax"}, method = RequestMethod.POST)
     public List<Query_special> querySpecialMax(Student student){
         List<Query_special> list = new LinkedList<>();
         List<Student> students = student_mapper.selectAll();
@@ -77,7 +77,7 @@ public class Student_Controller {
         return list;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = {"/querySpecial"}, method = RequestMethod.POST)
     public Query_special querySpecial(@RequestBody StudentDouble studentDouble){
         int same_course, same_course_teacher, same_association, same_dormitoryBuilding, same_dormitoryBuilding_place, same_book, same_class, same_department;
         same_course = student_mapper.querySameCourse(studentDouble);

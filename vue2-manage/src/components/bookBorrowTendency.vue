@@ -56,7 +56,7 @@
                             type: 'value',
                             name: '次数',
                             min: 0,
-                            max: 200,
+                            max: 20,
                             position: 'left',
                             axisLine: {
                                 lineStyle: {
@@ -72,8 +72,8 @@
                         {
                             name:'借书次数',
                             type:'line',
-                            //data:this.twDate[0],
-                            data :[1,2,8,4,5,6,7,8,9,10,11,12],
+                            data:this.twDate[0],
+                            //data :[1,2,8,4,5,6,7,8,9,10,11,12],
                             yAxisIndex: 0,
                             markPoint: {
                                 data: [
@@ -85,8 +85,8 @@
                         {
                             name:'低年级学生借阅次数',
                             type:'line',
-                            //data:this.twDate[1],
-                            data:[1,2,3,4,5,6,7,8,9,10,11,12],
+                            data:this.twDate[1],
+                            //data:[1,2,3,4,5,6,7,8,9,10,11,12],
                             yAxisIndex: 0,
                             markPoint: {
                                 data: [
@@ -98,8 +98,8 @@
                         {
                             name:'高年级学生借阅次数',
                             type:'line',
-                            //data:this.twDate[2],
-                            data:[1,2,3,4,5,2,7,8,9,10,11,12],
+                            data:this.twDate[2],
+                            //data:[1,2,3,4,5,2,7,8,9,10,11,12],
                             yAxisIndex: 0,
                             markPoint: {
                                 data: [

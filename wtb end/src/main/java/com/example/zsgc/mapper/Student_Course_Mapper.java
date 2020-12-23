@@ -15,8 +15,8 @@ public interface Student_Course_Mapper {
     @Select("select * from student_course where 学号 = #{student}") //管理员查看权限
     public List<Student_Course> selectByStudent(Student_Course student_course);
 
-    @Select("select * from student_course where 课程号 = #{course} and 教师编号 = #{teacher}") //管理员查看权限
-    public List<Student_Course> selectByCourseAndTeacher(Student_Course student_course);
+    @Select("select * from student_course where 课程号 = #{course}") //管理员查看权限
+    public List<Student_Course> selectByCourse(Student_Course student_course);
 
     @Insert("insert into student_course values (#{student},#{course},#{teacher},#{grade})")
     public void insertStudent_Course(Student_Course student_course);

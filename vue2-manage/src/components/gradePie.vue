@@ -32,17 +32,34 @@
                     legend: {
                         orient: 'vertical',
                         left: 'left',
+<<<<<<< HEAD
                         data: ['<60', '60~70', '70~80', '80~90', '>=90']
+=======
+                        data: ["<60","60-69","70-79","80-89",">=90"]
+>>>>>>> 6e8efd7c30c9fb2416de9edb39992ee66a48b5cf
                     },
                     series: [
                         {
-                            name: '分数',
+                            name: '成绩',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '60%'],
+<<<<<<< HEAD
                             data: [
                                 this.pieData
                             ],
+=======
+                            data:this.pieData/*[
+                                {value:10, name:'<60'},
+                                {value:50, name:'60-70'},
+                                {value:70, name:'70-80'},
+                                {value:60, name:'80-90'},
+                                {value:10, name:'>=90'},
+                                /*{value:this.pieData.hangzhou, name:'杭州'},
+                                {value:this.pieData.qita, name:'其他'}
+
+                            ]*/,
+>>>>>>> 6e8efd7c30c9fb2416de9edb39992ee66a48b5cf
                             itemStyle: {
                                 emphasis: {
                                     shadowBlur: 10,

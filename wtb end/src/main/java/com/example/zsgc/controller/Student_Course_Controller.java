@@ -26,9 +26,9 @@ public class Student_Course_Controller {
         return student_course_mapper.selectByStudent(student_course);
     }
 
-    @RequestMapping(value = {"/selectByCourseAndTeacher"}, method = RequestMethod.POST)
-    public List<Student_Course> selectByCourseAndTeacher(@RequestBody Student_Course student_course) {
-        return student_course_mapper.selectByCourseAndTeacher(student_course);
+    @RequestMapping(value = {"/selectByCourse"}, method = RequestMethod.POST)
+    public List<Student_Course> selectByCourse(@RequestBody Student_Course student_course) {
+        return student_course_mapper.selectByCourse(student_course);
     }
 
     @RequestMapping(value = {"/insert"}, method = RequestMethod.POST)

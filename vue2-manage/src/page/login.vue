@@ -3,7 +3,7 @@
         <transition name="form-fade" mode="in-out">
             <section class="form_contianer" v-show="showLogin">
                 <div class="manage_tip">
-                    <p>数据库课设系统</p>
+                    <p>校园服务通</p>
                 </div>
                 <el-form :model="loginForm" :rules="rules" ref="loginForm">
 
@@ -11,7 +11,7 @@
                         <el-select v-model="loginForm.identify" placeholder="请选择身份信息" style="width:100%">
                             <el-option label="超级管理员" value="superAdmin"></el-option>
                             <el-option label="系管理员" value="deptAdmin"></el-option>
-                            <el-option label="图书馆管理员" value="libAdmin"></el-option>
+                            <el-option label="图书管理员" value="libAdmin"></el-option>
                             <el-option label="杂项管理员" value="otherAdmin"></el-option>
                             <el-option label="教师" value="teacher"></el-option>
                             <el-option label="学生" value="student"></el-option>
@@ -38,101 +38,77 @@
 </template>
 
 <script>
-    import {login, getAdminInfo} from '@/api/getData'
-    import {mapActions, mapState} from 'vuex'
 
-    export default {
-        data() {
-            return {
-                loginForm: {
-                    identify: '',
-                    username: '',
-                    password: '',
-                },
-                rules: {
-                    identify: [
-                        {required: true, message: '请输入身份信息', trigger: 'blur'},
-                    ],
-                    username: [
-                        {required: true, message: '请输入用户名', trigger: 'blur'},
-                    ],
-                    password: [
-                        {required: true, message: '请输入密码', trigger: 'blur'}
-                    ],
-                },
-                showLogin: false,
-            }
-        },
-        mounted() {
-            this.showLogin = true;
-            if (!this.adminInfo.id) {
-                this.getAdminData()
-            }
-        },
-
-        computed: {
-            ...mapState(['adminInfo']),
-        },
-        methods: {
-            ...mapActions(['getAdminData']),
-            async submitForm(formName) {
-                this.$refs[formName].validate(async (valid) => {
-                    if (valid) {
-                        const res = await login({
-                            identify: this.loginForm.identify,
-                            user_name: this.loginForm.username,
-                            password: this.loginForm.password
-                        })
-                        if (res.status == 1) {
-                            this.$message({
-                                type: 'success',
-                                message: '登录成功'
-                            });
-                            if (this.loginForm.identify == "libAdmin") {
-                                this.$router.push('libraryManage');
-                            } else if (this.loginForm.identify == "deptAdmin") {
-                                this.$router.push("deptManage");
-                            } else if (this.loginForm.identify == "otherAdmin") {
-                                this.$router.push("otherManage");
-                            } else if (this.loginForm.identify == "teacher") {
-                                this.$router.push("deptManage");
-                            } else if (this.loginForm.identify == "student") {
-                                this.$router.push("studentView");
-                            } else if (this.loginForm.identify == "superAdmin") {
-                                this.$router.push("superMan");
-                            }
-                                /*else {
-                                    this.$router.push('manage')
-                                }*/
-                        } else {
-                            this.$message({
-                                type: 'error',
-                                message: res.message
-                            });
-                        }
-                    } else {
-                        this.$notify.error({
-                            title: '错误',
-                            message: '请输入正确的用户名密码',
-                            offset: 100
-                        });
-                        return false;
-                    }
-                });
+export default {
+    data() {
+        return {
+            loginForm: {
+                identify: '',
+                username: '',
+                password: '',
             },
-        },
-        watch: {
-            adminInfo: function (newValue) {
-                /*if (newValue.id) {
-                    this.$message({
-                        type: 'success',
-                        message: '检测到您之前登录过，将自动登录'
-                    });
-                    //this.$router.push('manage')
-                }*/
+            rules: {
+                identify: [
+                    {required: true, message: '请输入身份信息', trigger: 'blur'},
+                ],
+                username: [
+                    {required: true, message: '请输入用户名', trigger: 'blur'},
+                ],
+                password: [
+                    {required: true, message: '请输入密码', trigger: 'blur'}
+                ],
+            },
+            showLogin: false,
+        }
+    },
+    mounted() {
+        this.showLogin = true;
+    },
+    methods: {
+        submitForm(formName) {
+            if(this.loginForm.username!=""&&this.loginForm.password!=""&&this.loginForm.identify!="")
+            {
+            this.$axios
+                .post('/user/loginCheck', {
+                    userName: this.loginForm.username,
+                    passwords: this.loginForm.password,
+                    type: this.loginForm.identify
+                })
+                .then(successResponse => {
+                    if(successResponse.data.length==0)
+                    this.$message({type: 'error', message: '用户名或密码错误'})
+                    else
+                    {
+                        if(successResponse.data[0].type=="超级管理员")
+                        {
+                            if(this.loginForm.identify=="superAdmin") this.$router.push('/superManage');
+                            else if(this.loginForm.identify=="deptAdmin") this.$router.push('/deptManage');
+                            else if(this.loginForm.identify=="libAdmin") this.$router.push('/libraryManage');
+                            else if(this.loginForm.identify=="otherAdmin") this.$router.push('/otherManage');
+                            else if(this.loginForm.identify=="teacher") this.$router.push('/deptManage');
+                            else if(this.loginForm.identify=="student") this.$router.push('/studentView');
+                        }
+                        else if(successResponse.data[0].type=="系管理员"&&this.loginForm.identify=="deptAdmin")
+                            this.$router.push('/deptManage');
+                        else if(successResponse.data[0].type=="图书管理员"&&this.loginForm.identify=="libAdmin")
+                            this.$router.push('/libraryManage');
+                        else if(successResponse.data[0].type=="其他管理员"&&this.loginForm.identify=="otherAdmin")
+                            this.$router.push('/otherManage');
+                        else if(successResponse.data[0].type=="老师"&&this.loginForm.identify=="teacher")
+                            this.$router.push('/deptManage');
+                        else if(successResponse.data[0].type=="学生"&&this.loginForm.identify=="student")
+                            this.$router.push('/studentView');
+                        else
+                            this.$message({type: 'error', message: '身份不一致'});
+                    }
+                })
+                .catch(failResponse => {
+                    this.$message({type: 'error', message: '服务器异常'});
+                })
             }
         }
-    }
+    },
+}
 </script>
 
 <style lang="less" scoped>

@@ -46,7 +46,7 @@
             sexPie,
             sexZhu,
         },
-        mounted() {
+        created() {
             this.initData();
         },
         methods: {
@@ -61,25 +61,28 @@
                         this.$message({type: 'error',message: '查询班级信息失败'});
                     })
             },
-            async initData() {
-
-                    /*this.pieData2 = [
-                        {value: 1000, name: 'wtbnb'},
-                        {value: 300, name: 'xysnb'},
-                        {value: 300, name: 'yshnb'}
-                    ]*/
-                try{
-                    this.pieData = [
-                        {value: 1000, name: 'wtbnb'},
-                        {value: 300, name: 'xysnb'},
-                        {value: 300, name: 'yshnb'}
-                    ];
-                    this.woman = [10,50,20,30];
-                    this.man = [10,60,50,80];
-
-                }catch(err){
-                    console.log('获取用户分布信息失败',err);
-                }
+            initData() {
+                this.$axios
+                    .get('/student/selectAll')
+                    .then(successResponse => {
+                        var i,len,male,female;
+                        len=successResponse.data.length
+                        male=0
+                        female=0
+                        for(i=0;i<len;i++)
+                        {
+                            if(successResponse.data[i].gender=="男") male+=1;
+                            else female+=1;
+                        }
+                        this.pieData = [
+                            {value: female, name: '女'},
+                            {value: male, name: '男'}
+                        ];
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '获取学生信息失败'});
+                        console.log(failResponse);
+                    })
             },
         }
     }
