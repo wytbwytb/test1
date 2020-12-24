@@ -28,8 +28,6 @@
     import headTop from '../components/headTop'
     import bookBorrowTendency from "../components/bookBorrowTendency"
     import visitorPie from '@/components/visitorPie'
-    import tendency from "../components/tendency";
-    import {getUserCity} from '@/api/getData'
     export default {
         data(){
             return {
@@ -45,7 +43,6 @@
             libHeadTop,
             visitorPie,
             bookBorrowTendency,
-            tendency,
         },
         mounted(){
             this.initData();
@@ -73,8 +70,8 @@
                             else if(allData[i].borrowDate=="1008") this.twDate[0][7]+=1;
                             else if(allData[i].borrowDate=="1009") this.twDate[0][8]+=1;
                             else if(allData[i].borrowDate=="1010") this.twDate[0][9]+=1;
-                            else if(allData[i].borrowDate=="1011") this.twDate[0][10]+=1;
-                            else if(allData[i].borrowDate=="1012") this.twDate[0][11]+=1;
+                            else if(allData[i].borrowDate=="1223") this.twDate[0][10]+=1;
+                            else if(allData[i].borrowDate=="1224") this.twDate[0][11]+=1;
                          }
                      })
                      .catch(failResponse => {

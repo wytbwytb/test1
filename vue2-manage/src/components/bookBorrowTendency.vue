@@ -49,7 +49,7 @@
                     xAxis:  {
                         type: 'category',
                         boundaryGap: false,
-                        data : [1,2,3,4,5,6,7,8,9,10,11,12],
+                        data : [1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1223,1224],
                     },
                     yAxis: [
                         {
@@ -74,32 +74,6 @@
                             type:'line',
                             data:this.twDate[0],
                             //data :[1,2,8,4,5,6,7,8,9,10,11,12],
-                            yAxisIndex: 0,
-                            markPoint: {
-                                data: [
-                                    {type: 'max', name: '最大值'},
-                                    {type: 'min', name: '最小值'}
-                                ]
-                            },
-                        },
-                        {
-                            name:'低年级学生借阅次数',
-                            type:'line',
-                            data:this.twDate[1],
-                            //data:[1,2,3,4,5,6,7,8,9,10,11,12],
-                            yAxisIndex: 0,
-                            markPoint: {
-                                data: [
-                                    {type: 'max', name: '最大值'},
-                                    {type: 'min', name: '最小值'}
-                                ]
-                            },
-                        },
-                        {
-                            name:'高年级学生借阅次数',
-                            type:'line',
-                            data:this.twDate[2],
-                            //data:[1,2,3,4,5,2,7,8,9,10,11,12],
                             yAxisIndex: 0,
                             markPoint: {
                                 data: [

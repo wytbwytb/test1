@@ -1,6 +1,8 @@
 <script>
+  const userName = "";
   const userId = "";
   export default {
-       userId,
+       userName,
+       userId
  }
 </script>

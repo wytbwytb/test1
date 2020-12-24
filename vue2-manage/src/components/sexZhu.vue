@@ -46,7 +46,7 @@
                     },
                     legend: {
                         left: 'center',
-                        data: ['男', '女'],
+                        data: ['女','男' ],
                         bottom: 0
                     },
                     grid: {
@@ -57,14 +57,14 @@
                     },
                     series: [
                         {
-                            name: '男',
-                            data: [this.man[0], 200, 150, 80],
+                            name: '女',
+                            data: this.woman,
                             type: 'bar',
                             barWidth: 50,
                         },
                         {
-                            name: '女',
-                            data: [120, 200, 150, 80],
+                            name: '男',
+                            data: this.man,
                             type: 'bar',
                             barWidth: 50,
                         }]

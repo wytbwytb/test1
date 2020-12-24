@@ -70,9 +70,8 @@
                             //name:'新增管理员',
                             name:'value',
                             type:'line',
-                            data:[1,2,3,4,5,6,7,8],
+                            data:this.eightItem,
                             yAxisIndex: 0,
-
                         }
                     ]
                 };

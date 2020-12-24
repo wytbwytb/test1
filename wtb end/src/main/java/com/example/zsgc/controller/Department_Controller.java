@@ -30,24 +30,15 @@ public class Department_Controller {
         return department_mapper.selectByIdOrName(department);
     }
 
-    @RequestMapping(value = {"/queryDepartmentAge"}, method = RequestMethod.POST)
-    public int queryDepartmentAge(@RequestBody Department department, int age) {
-        return department_mapper.queryDepartmentAge(department, age);
-    }
 
     @RequestMapping(value = {"/queryDepartmentAllAge"},method = RequestMethod.POST)
     public Query_age_cnt queryDepartmentAllAge(@RequestBody Department department) {
-        int c18 = queryDepartmentAge(department,18);
-        int c19 = queryDepartmentAge(department, 19);
-        int c20 = queryDepartmentAge(department,20);
-        int c21 = queryDepartmentAge(department, 21);
-        int c22 = queryDepartmentAge(department, 22);
+        int c18 = department_mapper.queryDepartmentAge18(department);
+        int c19 = department_mapper.queryDepartmentAge19(department);
+        int c20 = department_mapper.queryDepartmentAge20(department);
+        int c21 = department_mapper.queryDepartmentAge21(department);
+        int c22 = department_mapper.queryDepartmentAge22(department);
         return new Query_age_cnt(c18,c19,c20,c21,c22);
-    }
-
-    @RequestMapping(value = {"/queryDepartmentSex"}, method = RequestMethod.POST)
-    public int queryDepartmentSex(@RequestBody Department department, String sex) {
-        return department_mapper.queryDepartmentSex(department, sex);
     }
 
     @RequestMapping(value = {"/queryAllDepartmentAge"}, method = RequestMethod.GET)
@@ -80,8 +71,8 @@ public class Department_Controller {
 
     @RequestMapping(value = {"/queryDepartmentAllSex"}, method = RequestMethod.POST)
     public Query_sex_count queryDepartmentAllSex(@RequestBody Department department) {
-        int boyCnt = queryDepartmentSex(department,"男");
-        int girlCnt = queryDepartmentSex(department, "女");
+        int boyCnt = department_mapper.queryDepartmentSexBoy(department);
+        int girlCnt = department_mapper.queryDepartmentSexGirl(department);
         return new Query_sex_count(boyCnt,girlCnt);
     }
 

@@ -81,6 +81,7 @@ export default {
                     {
                         var ok;
                         ok=1;
+                        common.userName = successResponse.data[0].userName;
                         if(successResponse.data[0].type=="超级管理员")
                             common.userId = successResponse.data[0].id;
                         else if(successResponse.data[0].type=="系管理员"&&this.loginForm.identify=="deptAdmin")

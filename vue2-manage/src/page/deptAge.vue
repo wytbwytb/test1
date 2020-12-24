@@ -57,13 +57,18 @@
         methods: {
             searchClick(){
                 this.$axios
-                    .post('/class/selectByClassId',{classId: "%"+this.keywords+"%"})
+                    .post('/department/queryDepartmentAllAge',{departmentId: this.keywords})
                     .then(successResponse => {
-                        this.allData=successResponse.data
-                        this.showAll();
+                        this.pieData = [
+                            {value: successResponse.data.c18, name: '18'},
+                            {value: successResponse.data.c19, name: '19'},
+                            {value: successResponse.data.c20, name: '20'},
+                            {value: successResponse.data.c21, name: '21'},
+                            {value: successResponse.data.c22, name: '22'}
+                        ];
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error',message: '查询班级信息失败'});
+                        this.$message({type: 'error',message: '查询失败'});
                     })
             },
             async initData() {
@@ -100,25 +105,31 @@
                         console.log(failResponse);
                     })
 
-                /*this.pieData2 = [
-                    {value: 1000, name: 'wtbnb'},
-                    {value: 300, name: 'xysnb'},
-                    {value: 300, name: 'yshnb'}
-                ]
-                try {
-                    this.pieData = [
-                        {value: 1000, name: 'wtbnb'},
-                        {value: 300, name: 'xysnb'},
-                        {value: 300, name: 'yshnb'}
-                    ];
-                    this.age18 = [10, 50, 20, 30];
-                    this.age19 = [10, 60, 50, 80];
-                    this.age20 = [10, 60, 50, 80];
-                    this.age21 = [10, 60, 50, 80];
-                    this.age22 = [60, 10, 50, 90];
-                } catch (err) {
-                    console.log('获取用户分布信息失败', err);
-                }*/
+                this.$axios
+                    .get('/department/queryAllDepartmentAge')
+                    .then(successResponse => {
+                        this.age18=[0,0,0,0,0,0,0];
+                        this.age19=[0,0,0,0,0,0,0];
+                        this.age20=[0,0,0,0,0,0,0];
+                        this.age21=[0,0,0,0,0,0,0];
+                        this.age22=[0,0,0,0,0,0,0];
+                        var i;
+                        for(i=0;i<7;i++)
+                        {
+                            this.age18[i]=successResponse.data[i].c18
+                            this.age19[i]=successResponse.data[i].c19
+                            this.age20[i]=successResponse.data[i].c20
+                            this.age21[i]=successResponse.data[i].c21
+                            this.age22[i]=successResponse.data[i].c22
+                        }
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '获取学生信息失败'});
+                        console.log("failResponse");
+                        console.log(failResponse);
+                        console.log("failResponse");
+                    })
+
             },
         }
     }

@@ -19,7 +19,7 @@
                     </el-form-item>
 
                     <el-form-item class="button_submit">
-                        <el-button type="primary" @click="submitForm('passData')" class="submit_btn">确认修改</el-button>
+                        <el-button type="primary" @click="submitForm()" class="submit_btn">确认修改</el-button>
                     </el-form-item>
                 </el-form>
                 <p class="tip">温馨提示：</p>
@@ -30,10 +30,7 @@
 </template>
 
 <script>
-    import libHeadTop from "../components/libHeadTop";
-    import {cityGuess, addShop, searchplace, foodCategory} from '@/api/getData'
-    import {baseUrl, baseImgPath} from '@/config/env'
-    import {mapActions} from "vuex";
+    import common from '@/components/common';
 
     export default {
         data() {
@@ -57,59 +54,45 @@
                 showLogin: true,
             }
         },
-        components: {
-            libHeadTop,
-        },
-        mounted() {
-            this.initData();
-        },
         methods: {
-            ...mapActions(['getAdminData']),
-            async submitForm(formName) {
-                this.$router.push("/");
-                /*this.$refs[formName].validate(async (valid) => {
-                    if (valid) {
-                        const res = await login({
-                            identify: this.loginForm.identify,
-                            user_name: this.loginForm.username,
-                            password: this.loginForm.password
-                        })
-                        if (res.status == 1) {
-                            this.$message({
-                                type: 'success',
-                                message: '登录成功'
-                            });
-                            if (this.loginForm.identify == "libAdmin") {
-                                this.$router.push('libraryManage');
-                            } else if (this.loginForm.identify == "deptAdmin") {
-                                this.$router.push("deptManage");
-                            } else if (this.loginForm.identify == "otherAdmin") {
-                                this.$router.push("otherManage");
-                            } else if (this.loginForm.identify == "teacher") {
-                                this.$router.push("deptManage");
-                            } else if (this.loginForm.identify == "student") {
-                                this.$router.push("studentView");
-                            } else if (this.loginForm.identify == "superAdmin") {
-                                this.$router.push("superMan");
-                            }
-
-                        } else {
-                            this.$message({
-                                type: 'error',
-                                message: res.message
-                            });
+            async submitForm() {
+            if(this.passData.newpass==this.passData.newpass1)
+            {
+                this.$axios
+                    .post('/user/loginCheck', {
+                        userName: common.userName,
+                        passwords: this.passData.oldpass
+                    })
+                    .then(successResponse => {
+            console.log(successResponse);
+                        if(successResponse.data.length==0)
+                        this.$message({type: 'error', message: '密码错误'})
+                        else
+                        {
+                            this.$axios
+                                .put('/user/update', {
+                                    userName: common.userName,
+                                    passwords: this.passData.newpass,
+                                    type: successResponse.data[0].type,
+                                    id: successResponse.data[0].id
+                                })
+                                .then(successResponse2 => {
+                                    this.$message({type: 'success', message: '修改密码成功'});
+                                    this.$router.push('/');
+                                })
+                                .catch(failResponse2 => {
+                                    this.$message({type: 'error', message: '修改密码失败'});
+                                })
                         }
-                    } else {
-                        this.$notify.error({
-                            title: '错误',
-                            message: '请输入正确的用户名密码',
-                            offset: 100
-                        });
-                        return false;
-                    }
-                });
-            },*/
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error', message: '修改密码失败'});
+                    })
             }
+            else
+            {
+                this.$message({type: 'error', message: '两次输入密码不一致'});
+            }}
         }
     }
 </script>

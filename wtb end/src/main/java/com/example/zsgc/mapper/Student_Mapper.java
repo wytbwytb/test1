@@ -62,7 +62,7 @@ public interface Student_Mapper {
             "    where 学号 = #{studentId1}" +
             "    intersect" +
             "    select 社团名称 from [Student-Association]" +
-            "    where 学号 = #{studentId2}'" +
+            "    where 学号 = #{studentId2}" +
             "        ) as Same_Asso")
     public int querySameAssociation(StudentDouble studentDouble);
 

@@ -52,13 +52,15 @@
         methods: {
             searchClick(){
                 this.$axios
-                    .post('/class/selectByClassId',{classId: "%"+this.keywords+"%"})
+                    .post('/department/queryDepartmentAllSex',{departmentId: this.keywords})
                     .then(successResponse => {
-                        this.allData=successResponse.data
-                        this.showAll();
+                        this.pieData = [
+                            {value: successResponse.data.girlCnt, name: '女'},
+                            {value: successResponse.data.boyCnt, name: '男'}
+                        ];
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error',message: '查询班级信息失败'});
+                        this.$message({type: 'error',message: '查询失败'});
                     })
             },
             initData() {
@@ -78,6 +80,22 @@
                             {value: female, name: '女'},
                             {value: male, name: '男'}
                         ];
+                    })
+                    .catch(failResponse => {
+                        this.$message({type: 'error',message: '获取学生信息失败'});
+                        console.log(failResponse);
+                    })
+                this.$axios
+                    .get('/department/queryAllDepartmentSex')
+                    .then(successResponse => {
+                        this.man=[0,0,0,0,0,0,0];
+                        this.woman=[0,0,0,0,0,0,0];
+                        var i;
+                        for(i=0;i<7;i++)
+                        {
+                            this.man[i]=successResponse.data[i].boyCnt
+                            this.woman[i]=successResponse.data[i].girlCnt
+                        }
                     })
                     .catch(failResponse => {
                         this.$message({type: 'error',message: '获取学生信息失败'});

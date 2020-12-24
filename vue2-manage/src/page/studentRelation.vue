@@ -39,22 +39,20 @@
 
 <script>
     import stuTop from "../components/stuTop";
-    import bookBorrowTendency from "../components/bookBorrowTendency"
-    import visitorPie from '@/components/visitorPie'
     import stuRelationTen from "../components/stuRelationTen"
-    import {getUserCity} from '@/api/getData'
+    import common from '@/components/common';
     export default {
         data(){
             return {
-                totaly:8,
-                sameCourse:1,
-                sameT:2,
-                sameClub:5,
-                sameDorm:1,
-                sameArea:4,
-                sameBorrow:5,
-                sameClass:5,
-                sameDept:2,
+                totaly:0,
+                sameCourse:0,
+                sameT:0,
+                sameClub:0,
+                sameDorm:0,
+                sameArea:0,
+                sameBorrow:0,
+                sameClass:0,
+                sameDept:0,
                 twDay:[],
                 eightItem:[],
                 pieData: {},
@@ -69,35 +67,35 @@
         },
         methods: {
             async initData(){
-                try{
-                    this.newBorrow = 10;
-                    this.newReturn = 10;
-                    this.allBorrow = 100;
-                    /*this.twDay = [1,2,3,4,5,6,7,8,9,10,11,12];
-                    this.twDate = [
-                        [1,2,3,4,5,6,7,8,9,10,11,12]
-                        ,[1,2,3,4,5,6,7,8,9,10,11,12]
-                        ,[1,2,3,4,5,6,7,8,9,10,11,12]];*/
-                    /*const res = await getUserCity();
-                    if (res.status == 1) {
-                        this.pieData = res.user_city;
-                    }else{
-                        throw new Error(res)
-                    }*/
-                }catch(err){
-                    console.log('获取用户分布信息失败',err);
-                }
             },
             searchClick(){
                 this.$axios
-                    .post('/studentbook/selectById',{student: "%"+this.keywords+"%",
-                        book:"%"+this.keywords+"%"})
+                    .post('/student/querySpecial',{studentId1: common.userId,
+                        studentId2: this.keywords})
                     .then(successResponse => {
-                        this.allData=successResponse.data
-                        this.showAll();
+                        this.sameCourse=successResponse.data.same_course;
+                        this.sameT=successResponse.data.same_course_teacher;
+                        this.sameClub=successResponse.data.same_association;
+                        this.sameDorm=successResponse.data.same_dormitoryBuilding;
+                        this.sameArea=successResponse.data.same_dormitoryBuilding_place;
+                        this.sameBorrow=successResponse.data.same_book;
+                        this.sameClass=successResponse.data.same_class;
+                        this.sameDept=successResponse.data.same_department;
+                        var ans;
+                        ans=0;
+                        ans+=this.sameCourse*5;
+                        ans+=this.sameT*7;
+                        ans+=this.sameClub*15;
+                        ans+=this.sameDorm*3;
+                        ans+=this.sameArea*5;
+                        ans+=this.sameBorrow*7;
+                        ans+=this.sameClass*20;
+                        ans+=this.sameDept*10;
+                        this.totaly=ans;
+                        this.eightItem=[this.sameCourse,this.sameT,this.sameClub,this.sameDorm,this.sameArea,this.sameBorrow,this.sameClass,this.sameDept];
                     })
                     .catch(failResponse => {
-                        this.$message({type: 'error',message: '查询借阅信息失败'});
+                        this.$message({type: 'error',message: '查询失败'});
                     })
             },
         }

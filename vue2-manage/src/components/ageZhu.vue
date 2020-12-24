@@ -33,7 +33,7 @@
                         }
                     },
                     title: {
-                        text: '年龄比例图',
+                        text: '年龄柱状图',
                         left: 'center'
                     },
                     xAxis: {
@@ -57,31 +57,31 @@
                     series: [
                         {
                             name: '18',
-                            data: [this.age18[0], 50, 60, 70],
+                            data: this.age18,
                             type: 'bar',
                             barWidth: 15,
                         },
                         {
                             name: '19',
-                            data: [10, 20, 30, 40],
+                            data: this.age19,
                             type: 'bar',
                             barWidth: 15,
                         },
                         {
                             name: '20',
-                            data: [120, 200, 150, 80],
+                            data: this.age20,
                             type: 'bar',
                             barWidth: 15,
                         },
                         {
                             name: '21',
-                            data: [120, 200, 150, 80],
+                            data: this.age21,
                             type: 'bar',
                             barWidth: 15,
                         },
                         {
                             name: '22',
-                            data: [33, 40, 5, 10],
+                            data: this.age22,
                             type: 'bar',
                             barWidth: 15,
                         }]
